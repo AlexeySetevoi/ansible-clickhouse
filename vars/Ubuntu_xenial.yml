@@ -1,0 +1,7 @@
+clickhouse_supported: yes
+clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/xenial stable main"
+clickhouse_package:
+  - clickhouse-server-common
+  - clickhouse-client
+
+

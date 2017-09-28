@@ -1,0 +1,19 @@
+---
+# defaults file for clickhouse
+
+#Flag for using with requirements check
+clickhouse_supported: no
+#Type of installation (package,source)
+clickhouse_setup: package
+#Flag for remove clickhouse from host(disabled by default)
+clickhouse_remove: no
+
+clickhouse_profiles_default:
+ default:
+   max_memory_usage: 10000000000
+   use_uncompressed_cache: 0
+   load_balancing: random
+ readonly:
+   readonly: 1
+
+clickhouse_profiles_custom: {}

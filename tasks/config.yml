@@ -1,0 +1,4 @@
+- name: Config | Generate users config
+  template:
+   src: users.j2
+   dest: /tmp/users.conf

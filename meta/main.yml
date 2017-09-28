@@ -1,0 +1,18 @@
+galaxy_info:
+  author: Alexey V. Bobrov
+  description: Role for installation and managing Yandex.ClickHouse
+
+  license: MIT
+  
+  min_ansible_version: 2.0
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+  galaxy_tags:
+    - clickhouse
+    - clickhouse-server
+
+dependencies: []
+

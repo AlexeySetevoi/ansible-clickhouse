@@ -1,0 +1,20 @@
+#grep -q sse4_2 /proc/cpuinfo && echo "SSE 4.2 supported" || echo "SSE 4.2 not supported"
+
+- name: Requirements check | Checking sse4_2 support
+  command: grep -q sse4_2 /proc/cpuinfo
+
+- name: Requirements check | Check distribution && release
+  fail:
+    msg: "Your distribution {{ ansible_distribution }}_{{ ansible_distribution_release }} not supported by this role,sorry."
+  when: clickhouse_supported|bool != True
+
+- name: Requirements check | Check if Clickhouse is installed
+  command: dpkg-query -l "{{ clickhouse_package[0] }}"
+  register: clickhouse_rt_isinstalled
+  ignore_errors: yes
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
+
+- name: Debug installed
+  debug: msg="dpkg-query -l {{ clickhouse_package[0] }}"
+
+
