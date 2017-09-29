@@ -4,4 +4,3 @@
   service:
     name: "clickhouse-server"
     state: restarted
-    become: true
