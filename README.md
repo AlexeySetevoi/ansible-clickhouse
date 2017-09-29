@@ -42,9 +42,10 @@ Allow any k-v. Transform to xml
 ```
 
 F: You can create custom users:
-#Full form { name:'<username>', password: '<plainpassword>', password_sha256_hex: '<sha256password>',
-#   networks:"<{} with nets>", profile:'<profile>', quota:'<quota>', dbs: '{} with dbs', comment: '<some comment>'}
-#Req: name, password or password_256_hex
+Full form { name:'<username>', password: '<plainpassword>', password_sha256_hex: '<sha256password>',
+   networks:"<{} with nets>", profile:'<profile>', quota:'<quota>', dbs: '{} with dbs', comment: '<some comment>'}
+Req: name, password or password_256_hex
+
 ```
 clickhouse_users_custom:
       - { name: "testuser",
