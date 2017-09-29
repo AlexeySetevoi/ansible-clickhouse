@@ -137,5 +137,6 @@ BSD
 Author Information
 ------------------
 
-ClickHouse by [Yandex LLC](https://clickhouse.yandex/docs/en/index.html).
+[ClickHouse] (https://clickhouse.yandex/docs/en/index.html) by [Yandex LLC](https://yandex.ru/company/).
+
 Role by [AlexeySetevoi](https://github.com/AlexeySetevoi).
