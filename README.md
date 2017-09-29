@@ -1,7 +1,7 @@
 ansible-clickhouse
 =========
 
-Simple clickhouse-server deploy && management role.
+Simple clickhouse-server deploy and management role.
 Any issues and pr are welcome.
 
 Role Variables
