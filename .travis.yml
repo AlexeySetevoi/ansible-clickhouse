@@ -12,7 +12,7 @@ matrix:
       dist: precise
 
 # Use the new container infrastructure
-sudo: false
+sudo: true
 
 # Install ansible
 addons:
