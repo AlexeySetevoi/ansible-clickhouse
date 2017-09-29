@@ -2,6 +2,7 @@
   template:
    src: users.j2
    dest: "{{ clickhouse_path_configdir }}/users.xml"
+  notify: restart-ch
 
 - name: Config | Create database config
   command: "clickhouse-client -q 'CREATE DATABASE IF NOT EXISTS {{ item }}'"

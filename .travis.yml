@@ -33,6 +33,16 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  # Http port checking
+  - curl 'http://localhost:8123'
+  - echo 'SELECT 1' | curl 'http://testuser2:testplpassword@localhost:8123?database=testu2' -d @-
+  # Clickhouse client checking
+  - clickhouse-client -q 'select 1'
+  - clickhouse-client -q 'select 1' -d default
+  - clickhouse-client -q 'select 1' -d testu1
+  - clickhouse-client -q 'select 1' -d testu2 -u testuser2 --password testplpassword
+  - clickhouse-client -q 'select 1' -d testu3
+
 
 #notifications:
 #  webhooks: https://galaxy.ansible.com/api/v1/notifications/
