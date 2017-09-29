@@ -17,7 +17,7 @@ clickhouse_profiles_custom:
    my_super_param: 9000
 ```
 
-Allow any k-v. Transform to xml
+Allow any plain k-v. Transform to xml
 ```
 <profiles>
     <!-- Profiles of settings. -->
