@@ -1,5 +1,28 @@
 ---
 - hosts: localhost
   remote_user: root
+  vars:
+    clickhouse_users_custom:
+      - { name: "testuser",
+          password_sha256_hex: "testhexpassword",
+          networks: "{{ clickhouse_networks_default }}",
+          profile: "default",
+          quota: "default",
+          dbs: {test} ,
+          comment: "classic user with plain password"}
+      - { name: "testuser2",
+          password: "testplpassword",
+          networks: "{{ clickhouse_networks_default }}",
+          profile: "default",
+          quota: "default",
+          dbs: {test} ,
+          comment: "classic user with hex password"}
+      - { name: "testuser3",
+          password: "testplpassword",
+          networks: "{{ clickhouse_networks_default }}",
+          profile: "default",
+          quota: "default",
+          dbs: {test,test1,test2} ,
+          comment: "classic user with multi dbs allow password"}
   roles:
     - ansible-clickhouse

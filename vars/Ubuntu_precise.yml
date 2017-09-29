@@ -3,3 +3,4 @@ clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/precise stable main"
 clickhouse_package:
   - clickhouse-server-common
   - clickhouse-client
+clickhouse_path_configdir: "/etc/clickhouse-server/"

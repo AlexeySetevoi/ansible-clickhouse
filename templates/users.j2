@@ -25,81 +25,80 @@
 
     <!-- Users and ACL. -->
     <users>
-        <!-- If user name was not specified, 'default' user is used. -->
-        <default>
-            <!-- Password could be specified in plaintext or in SHA256 (in hex format).
-
-                 If you want to specify password in plaintext (not recommended), place it in 'password' element.
-                 Example: <password>qwerty</password>.
-                 Password could be empty.
-
-                 If you want to specify SHA256, place it in 'password_sha256_hex' element.
-                 Example: <password_sha256_hex>65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5</password_sha256_hex>
-
-                 How to generate decent password:
-                 Execute: PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
-                 In first line will be password and in second - corresponding SHA256.
-            -->
-            <password></password>
-
-            <!-- List of networks with open access.
-
-                 To open access from everywhere, specify:
-                    <ip>::/0</ip>
-
-                 To open access only from localhost, specify:
-                    <ip>::1</ip>
-                    <ip>127.0.0.1</ip>
-
-                 Each element of list has one of the following forms:
-                 <ip> IP-address or network mask. Examples: 213.180.204.3 or 10.0.0.1/8 or 2a02:6b8::3 or 2a02:6b8::3/64.
-                 <host> Hostname. Example: server01.yandex.ru.
-                     To check access, DNS query is performed, and all received addresses compared to peer address.
-                 <host_regexp> Regular expression for host names. Example, ^server\d\d-\d\d-\d\.yandex\.ru$
-                     To check access, DNS PTR query is performed for peer address and then regexp is applied.
-                     Then, for result of PTR query, another DNS query is performed and all received addresses compared to peer address.
-                     Strongly recommended that regexp is ends with $
-                 All results of DNS requests are cached till server restart.
-            -->
-            <networks incl="networks" replace="replace">
-                <ip>::/0</ip>
-            </networks>
-
-            <!-- Settings profile for user. -->
-            <profile>default</profile>
-
-            <!-- Quota for user. -->
-            <quota>default</quota>
-        </default>
-
-        <!-- Example of user with readonly access. -->
-        <readonly>
-            <password></password>
-            <networks incl="networks" replace="replace">
-                <ip>::1</ip>
-                <ip>127.0.0.1</ip>
-            </networks>
-            <profile>readonly</profile>
-            <quota>default</quota>
-        </readonly>
+    <!-- Default users. -->
+    {% for user in clickhouse_users_default %}
+    {% if user.comment is defined %}
+    <!-- {{user.comment}} -->
+    {% endif %}
+    <{{ user.name }}>
+        {% if user.password is defined and user.password_sha256_hex is not defined %}
+        <password>{{ user.password }}</password>
+        {% elif user.password is not defined and user.password_sha256_hex is defined %}
+        <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+        {% elif user.password is defined and user.password_sha256_hex is defined %}
+        <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+        {% endif %}
+        <networks incl="networks" replace="replace">
+        {% for net in user.networks %}
+        <ip>{{ net }}</ip>
+        {% endfor %}
+        </networks>
+        <profile>{{ user.profile }}</profile>
+        <quota>{{ user.quota }}</quota>
+        {% if user.dbs is defined %}
+         <allow_databases>
+        {% for db in user.dbs %}
+            <database>{{ db }}</database>
+        {% endfor %}
+        </allow_databases>
+        {% endif %}
+    </{{ user.name }}>
+    {% endfor %}
+    <!-- Custom users. -->
+    {% for user in clickhouse_users_custom %}
+    {% if user.comment is defined %}
+    <!-- {{user.comment}} -->
+    {% endif %}
+    <{{ user.name }}>
+        {% if user.password is defined and user.password_sha256_hex is not defined %}
+        <password>{{ user.password }}</password>
+        {% elif user.password is not defined and user.password_sha256_hex is defined %}
+        <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+        {% elif user.password is defined and user.password_sha256_hex is defined %}
+        <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
+        {% endif %}
+        <networks incl="networks" replace="replace">
+        {% for net in user.networks %}
+        <ip>{{ net }}</ip>
+        {% endfor %}
+        </networks>
+        <profile>{{ user.profile }}</profile>
+        <quota>{{ user.quota }}</quota>
+        {% if user.dbs is defined %}
+         <allow_databases>
+        {% for db in user.dbs %}
+            <database>{{ db }}</database>
+        {% endfor %}
+        </allow_databases>
+        {% endif %}
+    </{{ user.name }}>
+    {% endfor %}
     </users>
 
     <!-- Quotas. -->
     <quotas>
-        <!-- Name of quota. -->
-        <default>
-            <!-- Limits for time interval. You could specify many intervals with different limits. -->
-            <interval>
-                <!-- Length of interval. -->
-                <duration>3600</duration>
-
-                <!-- No limits. Just calculate resource usage for time interval. -->
-                <queries>0</queries>
-                <errors>0</errors>
-                <result_rows>0</result_rows>
-                <read_rows>0</read_rows>
-                <execution_time>0</execution_time>
-            </interval>
-        </default>
+        <!-- Default quotas. -->
+    {% for quota in clickhouse_quotas_default %}
+    <{{ quota.name }}>
+    {% for interval in quota.intervals %}
+        <duration>{{ interval.duration }}</duration>
+        <queries>{{ interval.queries }}</queries>
+        <errors>{{ interval.errors }}</errors>
+        <result_rows>{{ interval.result_rows }}</result_rows>
+        <read_rows>{{ interval.read_rows }}</read_rows>
+        <execution_time>{{ interval.execution_time }}</execution_time>
+    {% endfor %}
+    </{{ quota.name }}>
+    {% endfor %}
     </quotas>
 </yandex>
