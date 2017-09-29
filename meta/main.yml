@@ -10,6 +10,8 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - xenial
+        - trusty
+        - precise
   galaxy_tags:
     - clickhouse
     - clickhouse-server

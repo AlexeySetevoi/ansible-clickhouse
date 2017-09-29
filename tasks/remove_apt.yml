@@ -7,14 +7,17 @@
     state: absent
     purge: yes
   with_items: "{{ clickhouse_package }}"
+  become: true
 
 - name: Uninstall by APT | Repo uninstallation
   apt_repository:
     repo: "{{ clickhouse_repo }}"
     state: absent
+  become: true
 
 - name: Uninstall by APT | Apt-key remove yandex repo key
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: E0C56BD4
     state: absent
+  become: true
