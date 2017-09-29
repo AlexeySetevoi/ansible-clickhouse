@@ -8,7 +8,7 @@ Role Variables
 --------------
 
 F: You can create custom profiles
-```
+```yaml
 clickhouse_profiles_custom:
  my_custom_profile:
    max_memory_usage: 10000000000
@@ -18,7 +18,7 @@ clickhouse_profiles_custom:
 ```
 
 Allow any plain k-v. Transform to xml
-```
+```xml
 <profiles>
     <!-- Profiles of settings. -->
     <!-- Default profiles. -->
@@ -43,7 +43,7 @@ Allow any plain k-v. Transform to xml
 ```
 
 F: You can create custom users:
-```
+```yaml
 clickhouse_users_custom:
       - { name: "testuser",
           password_sha256_hex: "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
@@ -69,17 +69,17 @@ clickhouse_users_custom:
 ```
 
 F: You can manage own quotas:
-```
+```yaml
 clickhouse_quotas_custom:
  - { name: "my_custom_quota", intervals: "{{ clickhouse_quotas_intervals_default }}",comment: "Default quota - count only" }
 ```
 Quote object is simple dict:
-```
+```yaml
  - { duration: 3600, queries: 0, errors: 0,result_rows: 0,read_rows: 0,execution_time: 0 }
 ```
 
 F: You can create any databases:
-```
+```yaml
 clickhouse_dbs_custom:
       - testu1
       - testu2
@@ -87,7 +87,7 @@ clickhouse_dbs_custom:
 ```
 
 F: Flag for remove clickhouse from host(disabled by default)
-```
+```yaml
 clickhouse_remove: no
 ```
 
@@ -95,7 +95,7 @@ Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-```
+```yaml
   - hosts: localhost
     remote_user: root
     vars:
