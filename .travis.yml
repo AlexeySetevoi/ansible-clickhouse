@@ -37,7 +37,7 @@ script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   # Full install check
-  - ansible-playbook tests/test.yml -i tests/inventory
+  - sudo ansible-playbook tests/test.yml -i tests/inventory
   # Http port checking
   - curl 'http://localhost:8123'
   - echo 'SELECT 1' | curl 'http://testuser2:testplpassword@localhost:8123?database=testu2' -d @-
