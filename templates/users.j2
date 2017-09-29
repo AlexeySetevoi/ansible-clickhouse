@@ -100,7 +100,7 @@
     {% endfor %}
     </{{ quota.name }}>
     {% endfor %}
-    % for quota in clickhouse_quotas_custom %}
+    {% for quota in clickhouse_quotas_custom %}
     {% for interval in quota.intervals %}
         <duration>{{ interval.duration }}</duration>
         <queries>{{ interval.queries }}</queries>

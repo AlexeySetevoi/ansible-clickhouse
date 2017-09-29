@@ -21,4 +21,5 @@
   tags: [install]
 
 - include: config.yml
-  tags: [install]
+  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  tags: [config]
