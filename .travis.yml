@@ -37,8 +37,8 @@ script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   # Full install check
-  - sudo ansible-playbook tests/test.yml -i tests/inventory
-  - sudo netstat -nlp
+  - ansible-playbook tests/test.yml -i tests/inventory
+  - cat /var/log/clickhouse-server/clickhouse-server.err.log
   # Http port checking
   - curl 'http://localhost:8123'
   - echo 'SELECT 1' | curl 'http://testuser2:testplpassword@localhost:8123?database=testu2' -d @-
