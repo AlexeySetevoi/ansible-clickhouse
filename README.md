@@ -1,7 +1,8 @@
-Role Name
+ansible-clickhouse
 =========
 
 Simple clickhouse-server deploy && management role.
+Any issues and pr are welcome.
 
 Role Variables
 --------------
@@ -136,4 +137,5 @@ BSD
 Author Information
 ------------------
 
-ClickHouse by Yandex LLC.
+ClickHouse by [Yandex LLC](https://clickhouse.yandex/docs/en/index.html).
+Role by [AlexeySetevoi](https://github.com/AlexeySetevoi).
