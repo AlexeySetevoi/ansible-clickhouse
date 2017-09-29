@@ -38,7 +38,7 @@ script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   # Full install check
   - sudo ansible-playbook tests/test.yml -i tests/inventory
-  - sudo netstat -nlp |grep 9000
+  - sudo netstat -nlp
   # Http port checking
   - curl 'http://localhost:8123'
   - echo 'SELECT 1' | curl 'http://testuser2:testplpassword@localhost:8123?database=testu2' -d @-
