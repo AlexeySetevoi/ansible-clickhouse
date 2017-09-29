@@ -3,3 +3,7 @@
    src: users.j2
    dest: "{{ clickhouse_path_configdir }}/users.xml"
 
+- name: Config | Create database config
+  command: "clickhouse-client -q 'CREATE DATABASE IF NOT EXISTS {{ item }}'"
+  with_items: "clickhouse_dbs"
+

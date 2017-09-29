@@ -38,3 +38,9 @@ clickhouse_quotas_default:
  - { name: "default", intervals: "{{ clickhouse_quotas_intervals_default }}",comment: "Default quota - count only" }
 
 clickhouse_quotas_custom: {}
+
+clickhouse_dbs_default: []
+clickhouse_dbs_custom: []
+
+clickhouse_dbs: "{{ clickhouse_dbs_default + clickhouse_dbs_custom }}"
+

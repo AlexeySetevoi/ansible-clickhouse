@@ -4,25 +4,29 @@
   vars:
     clickhouse_users_custom:
       - { name: "testuser",
-          password_sha256_hex: "testhexpassword",
+          password_sha256_hex: "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
           networks: "{{ clickhouse_networks_default }}",
           profile: "default",
           quota: "default",
-          dbs: {test} ,
+          dbs: {testu1} ,
           comment: "classic user with plain password"}
       - { name: "testuser2",
           password: "testplpassword",
           networks: "{{ clickhouse_networks_default }}",
           profile: "default",
           quota: "default",
-          dbs: {test} ,
+          dbs: {testu2} ,
           comment: "classic user with hex password"}
       - { name: "testuser3",
           password: "testplpassword",
-          networks: "{{ clickhouse_networks_default }}",
+          networks: { 192.168.0.0/24, 10.0.0.0/8 },
           profile: "default",
           quota: "default",
-          dbs: {test,test1,test2} ,
-          comment: "classic user with multi dbs allow password"}
+          dbs: {testu1,testu2,testu3} ,
+          comment: "classic user with multi dbs and multi-custom network allow password"}
+    clickhouse_dbs_custom:
+      - testu1
+      - testu2
+      - testu3
   roles:
     - ansible-clickhouse
