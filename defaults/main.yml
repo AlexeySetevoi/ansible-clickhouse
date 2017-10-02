@@ -18,6 +18,20 @@ clickhouse_profiles_default:
 
 clickhouse_profiles_custom: {}
 
+clickhouse_listen_host_default:
+  - "::1"
+  - "127.0.0.1"
+
+clickhouse_listen_host_custom: []
+
+clickhouse_listen_host: "{{ clickhouse_listen_host_default + clickhouse_listen_host_custom }}"
+
+clickhouse_http_port: 8123
+
+clickhouse_tcp_port: 9000
+
+clickhouse_interserver_http: 9009
+
 clickhouse_networks_default:
   - "::1"
   - "127.0.0.1"
@@ -43,4 +57,12 @@ clickhouse_dbs_default: []
 clickhouse_dbs_custom: []
 
 clickhouse_dbs: "{{ clickhouse_dbs_default + clickhouse_dbs_custom }}"
+
+clickhouse_logger:
+  level: trace
+  log: "{{ clickhouse_path_logdir }}/clickhouse-server.log"
+  errorlog: "{{ clickhouse_path_logdir }}/clickhouse-server.err.log"
+  size: 1000M
+  count: 10
+
 
