@@ -4,3 +4,7 @@ clickhouse_package:
   - clickhouse-server-common
   - clickhouse-client
 clickhouse_path_configdir: "/etc/clickhouse-server/"
+clickhouse_path_logdir: "/var/log/clickhouse-server"
+clickhouse_path_data: "/var/lib/clickhouse/"
+clickhouse_path_tmp: "/var/lib/clickhouse/tmp/"
+
