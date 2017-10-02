@@ -12,9 +12,11 @@ galaxy_info:
         - xenial
         - trusty
         - precise
+        
   galaxy_tags:
     - clickhouse
-    - clickhouse-server
+    - database
+    - sql
 
 dependencies: []
 
