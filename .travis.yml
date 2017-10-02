@@ -50,5 +50,5 @@ script:
   - clickhouse-client -q 'select 1' -d testu3
 
 
-#notifications:
-#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

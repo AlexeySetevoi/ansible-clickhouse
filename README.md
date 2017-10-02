@@ -1,4 +1,4 @@
-ansible-clickhouse [![Build Status](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse.svg?branch=develop)](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse)
+ansible-clickhouse [![Build Status](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse.svg?branch=master)](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse)
 =========
 
 Simple clickhouse-server deploy and management role.
@@ -7,6 +7,17 @@ Any issues and pr are welcome.
 Role Variables
 --------------
 
+F: You can manage listen ports
+```yaml
+clickhouse_http_port: 8123
+clickhouse_tcp_port: 9000
+clickhouse_interserver_http: 9009
+```
+F: you can manage listen ip:
+```yaml
+clickhouse_listen_host_custom:
+  - "192.168.0.1"
+```
 F: You can create custom profiles
 ```yaml
 clickhouse_profiles_custom:
