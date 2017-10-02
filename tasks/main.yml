@@ -20,5 +20,9 @@
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == True
   tags: [install]
 
+- include: precheck.yml
+  tags: [precheck]
+
 - include: config.yml
-  tags: [install]
+  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  tags: [config]

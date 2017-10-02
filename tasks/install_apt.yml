@@ -5,14 +5,17 @@
   apt_key:
     keyserver: keyserver.ubuntu.com
     id: E0C56BD4
+  become: true
 
 - name: Install by APT | Repo installation
   apt_repository:
     repo: "{{ clickhouse_repo }}"
     state: present
+  become: true
 
 - name: Install by APT | Package installation
   apt:
     name: "{{ item }}"
     state: latest
   with_items: "{{ clickhouse_package }}"
+  become: true

@@ -1,2 +1,7 @@
 ---
 # handlers file for clickhouse
+- name: restart-ch
+  service:
+    name: "clickhouse-server"
+    state: restarted
+  become: true

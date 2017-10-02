@@ -17,3 +17,62 @@ clickhouse_profiles_default:
    readonly: 1
 
 clickhouse_profiles_custom: {}
+
+clickhouse_listen_host_default:
+  - "::1"
+  - "127.0.0.1"
+
+clickhouse_listen_host_custom: []
+
+clickhouse_listen_host: "{{ clickhouse_listen_host_default + clickhouse_listen_host_custom }}"
+
+clickhouse_http_port: 8123
+
+clickhouse_tcp_port: 9000
+
+clickhouse_interserver_http: 9009
+
+clickhouse_networks_default:
+  - "::1"
+  - "127.0.0.1"
+
+clickhouse_users_default:
+  - { name: "default", password: "", networks: "{{ clickhouse_networks_default }}", profile: "default", quota: "default", comment: "Default user for login if user not defined" }
+  - { name: "readonly", password: "", networks: "{{ clickhouse_networks_default }}", profile: "default", quota: "default", comment: "Example of user with readonly access" }
+
+#Full form { name:'<username>', password: '<plainpassword>', password_sha256_hex: '<sha256password>',
+#   networks:"<{} with nets>", profile:'<profile>', quota:'<quota>', dbs: '{} with dbs', comment: '<some comment>'}
+#Req: name, password or password_256_hex
+clickhouse_users_custom: {}
+
+clickhouse_quotas_intervals_default:
+ - { duration: 3600, queries: 0, errors: 0,result_rows: 0,read_rows: 0,execution_time: 0 }
+
+clickhouse_quotas_default:
+ - { name: "default", intervals: "{{ clickhouse_quotas_intervals_default }}",comment: "Default quota - count only" }
+
+clickhouse_quotas_custom: {}
+
+clickhouse_dbs_default: []
+clickhouse_dbs_custom: []
+
+clickhouse_dbs: "{{ clickhouse_dbs_default + clickhouse_dbs_custom }}"
+
+clickhouse_logger:
+  level: trace
+  log: "{{ clickhouse_path_logdir }}/clickhouse-server.log"
+  errorlog: "{{ clickhouse_path_logdir }}/clickhouse-server.err.log"
+  size: 1000M
+  count: 10
+
+clickhouse_config:
+  max_connections: 2048
+  keep_alive_timeout: 3
+  max_concurrent_queries: 100
+  uncompressed_cache_size: 8589934592
+  mark_cache_size: 5368709120
+  builtin_dictionaries_reload_interval: 3600
+  max_session_timeout: 3600
+  default_session_timeout: 60
+
+
