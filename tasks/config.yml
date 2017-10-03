@@ -15,6 +15,6 @@
 - meta: flush_handlers
 
 - name: Config | Create database config
-  command: "clickhouse-client -h localhost -q 'CREATE DATABASE IF NOT EXISTS {{ item }}'"
+  command: "clickhouse-client -h localhost -q 'CREATE DATABASE IF NOT EXISTS `{{ item }}`'"
   with_items: "{{ clickhouse_dbs }}"
 
