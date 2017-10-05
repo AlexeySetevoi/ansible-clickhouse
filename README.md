@@ -90,11 +90,14 @@ Quote object is simple dict:
 ```
 
 F: You can create any databases:
+default db state - present
 ```yaml
 clickhouse_dbs_custom:
-      - testu1
-      - testu2
-      - testu3
+      - { name: testu1 }
+      - { name: testu2 }
+      - { name: testu3 }
+      - { name: testu4, state: absent }
+      - { name: testu4, state: present }
 ```
 
 F: Flag for remove clickhouse from host(disabled by default)
