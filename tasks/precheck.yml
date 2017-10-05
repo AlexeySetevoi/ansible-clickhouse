@@ -9,12 +9,10 @@
   when: clickhouse_supported|bool != True
 
 - name: Requirements check | Check if Clickhouse is installed
-  command: dpkg-query -l "{{ clickhouse_package[0] }}"
+  shell: dpkg-query -l {{ clickhouse_package| join(" ")}}
   register: clickhouse_rt_isinstalled
   ignore_errors: yes
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
 
-- name: Debug installed
-  debug: msg="dpkg-query -l {{ clickhouse_package[0] }}"
 
 
