@@ -1,9 +1,9 @@
 clickhouse_supported: yes
 clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/precise stable main"
 clickhouse_package:
-  - clickhouse-server-common
   - clickhouse-client
   - clickhouse-server-base
+  - clickhouse-server-common
 clickhouse_path_configdir: "/etc/clickhouse-server"
 clickhouse_path_logdir: "/var/log/clickhouse-server"
 clickhouse_path_data: "/var/lib/clickhouse/"
