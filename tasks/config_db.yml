@@ -1,0 +1,11 @@
+- name: Config | Delete database config
+  command: "clickhouse-client -h localhost -q 'DROP DATABASE IF EXISTS `{{ item.name }}`'"
+  with_items: "{{ clickhouse_dbs }}"
+  when: item.state is defined and item.state == 'absent'
+  tags: [config_db]
+
+- name: Config | Create database config
+  command: "clickhouse-client -h localhost -q 'CREATE DATABASE IF NOT EXISTS `{{ item.name }}`'"
+  with_items: "{{ clickhouse_dbs }}"
+  when: item.state is undefined or item.state == 'present'
+  tags: [config_db]

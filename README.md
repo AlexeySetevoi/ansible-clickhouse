@@ -90,11 +90,14 @@ Quote object is simple dict:
 ```
 
 F: You can create any databases:
+default db state - present
 ```yaml
 clickhouse_dbs_custom:
-      - testu1
-      - testu2
-      - testu3
+      - { name: testu1 }
+      - { name: testu2 }
+      - { name: testu3 }
+      - { name: testu4, state: absent }
+      - { name: testu4, state: present }
 ```
 
 F: Flag for remove clickhouse from host(disabled by default)
@@ -139,6 +142,15 @@ Including an example of how to use your role (for instance, with variables passe
     roles:
       - ansible-clickhouse
 ```
+
+F: You can call separately stages(from playbook, external role etc.):
+
+Tag | Action
+------------ | -------------
+install | Only installation of packages
+config_sys | Only configuration system configs(users.xml and config.xml)
+config_db | Only add&remove databases
+config | config_sys+config_db
 
 License
 -------

@@ -7,7 +7,7 @@
   tags: [always]
 
 - include: precheck.yml
-  tags: [precheck]
+  tags: [precheck,install]
 
 - name: Debug installed
   debug: var=clickhouse_rt_isinstalled.rc
@@ -18,11 +18,15 @@
 
 - include: remove_apt.yml
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == True
-  tags: [install]
+  tags: [remove]
 
 - include: precheck.yml
-  tags: [precheck]
+  tags: [precheck,config,config_sys,config_db]
 
-- include: config.yml
+- include: config_sys.yml
   when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
-  tags: [config]
+  tags: [config,config_sys]
+
+- include: config_db.yml
+  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  tags: [config,config_db]

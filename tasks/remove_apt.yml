@@ -21,3 +21,15 @@
     id: E0C56BD4
     state: absent
   become: true
+
+- name: Remove clickhouse config,data and logs
+  file:
+    dest: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ clickhouse_path_logdir }}"
+    - "{{ clickhouse_path_configdir }}"
+    - "{{ clickhouse_path_tmp }}"
+    - "{{ clickhouse_path_data }}"
+  become: true
+  when: clickhouse_remove_full|bool == True
