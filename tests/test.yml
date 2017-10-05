@@ -27,8 +27,10 @@
           dbs: {testu1,testu2,testu3} ,
           comment: "classic user with multi dbs and multi-custom network allow password"}
     clickhouse_dbs_custom:
-      - testu1
-      - testu2
-      - testu3
+      - { name: testu1 }
+      - { name: testu2 }
+      - { name: testu3 }
+      - { name: testu4, state: absent }
+      - { name: testu4, state: present }
   roles:
     - ansible-clickhouse
