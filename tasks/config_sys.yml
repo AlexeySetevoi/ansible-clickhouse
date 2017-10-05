@@ -1,3 +1,17 @@
+- name: Check clickhouse config,data and logs
+  file:
+    dest: "{{ item }}"
+    owner: clickhouse
+    group: clickhouse
+    state: directory
+  with_items:
+    - "{{ clickhouse_path_logdir }}"
+    - "{{ clickhouse_path_configdir }}"
+    - "{{ clickhouse_path_tmp }}"
+    - "{{ clickhouse_path_data }}"
+  notify: restart-ch
+  become: true
+
 - name: Config | Generate system config
   template:
    src: config.j2

@@ -143,6 +143,15 @@ Including an example of how to use your role (for instance, with variables passe
       - ansible-clickhouse
 ```
 
+F: You can call separately stages(from playbook, external role etc.):
+
+Tag | Action
+------------ | -------------
+install | Only installation of packages
+config_sys | Only configuration system configs(users.xml and config.xml)
+config_db | Only add&remove databases
+config | config_sys+config_db
+
 License
 -------
 

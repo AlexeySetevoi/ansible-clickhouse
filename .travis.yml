@@ -38,6 +38,7 @@ script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   # Full install check
   - ansible-playbook tests/test.yml -i tests/inventory
+  - sudo cat /var/log/clickhouse-server/clickhouse-server.err.log
   # Clickhouse client checking
   - clickhouse-client -q 'select 1'
   - clickhouse-client -q 'select 1' -d default
@@ -46,7 +47,7 @@ script:
   - clickhouse-client -q 'select 1' -d testu3
   # Remove check
   - ansible-playbook tests/test.yml -i tests/inventory -e "clickhouse_remove=yes"
-  # Parital install check
+  # Partial install check
   - ansible-playbook tests/test.yml -i tests/inventory -t install
   - ansible-playbook tests/test.yml -i tests/inventory -t config_sys
   - ansible-playbook tests/test.yml -i tests/inventory -t config_db
@@ -61,6 +62,8 @@ script:
   - clickhouse-client -q 'select 1' -d testu1
   - clickhouse-client -q 'select 1' -d testu2 -u testuser2 --password testplpassword
   - clickhouse-client -q 'select 1' -d testu3
+  #Full remove check
+  - ansible-playbook tests/test.yml -i tests/inventory -e "clickhouse_remove=yes clickhouse_remove_full=yes"
 
 
 notifications:
