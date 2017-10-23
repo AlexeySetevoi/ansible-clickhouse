@@ -61,21 +61,21 @@ clickhouse_users_custom:
           networks: "{{ clickhouse_networks_default }}",
           profile: "default",
           quota: "default",
-          dbs: {testu1} ,
+          dbs: [ testu1 ] ,
           comment: "classic user with plain password"}
       - { name: "testuser2",
           password: "testplpassword",
           networks: "{{ clickhouse_networks_default }}",
           profile: "default",
           quota: "default",
-          dbs: {testu2} ,
+          dbs: [ testu2 ] ,
           comment: "classic user with hex password"}
       - { name: "testuser3",
           password: "testplpassword",
           networks: { 192.168.0.0/24, 10.0.0.0/8 },
           profile: "default",
           quota: "default",
-          dbs: {testu1,testu2,testu3} ,
+          dbs: [ testu1,testu2,testu3 ] ,
           comment: "classic user with multi dbs and multi-custom network allow password"}
 ```
 
