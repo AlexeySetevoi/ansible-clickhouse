@@ -47,7 +47,7 @@ Allow any plain k-v. Transform to xml
             <max_memory_usage>10000000000</max_memory_usage>
             <load_balancing>random</load_balancing>
             <use_uncompressed_cache>0</use_uncompressed_cache>
-            <my_super_param>0</my_super_param>
+            <my_super_param>9000</my_super_param>
         </my_custom_profile>
         <!-- Custom profiles end. -->
 </profiles>
@@ -119,26 +119,26 @@ Including an example of how to use your role (for instance, with variables passe
               networks: "{{ clickhouse_networks_default }}",
               profile: "default",
               quota: "default",
-              dbs: {testu1} ,
+              dbs: [ testu1 ] ,
               comment: "classic user with plain password"}
           - { name: "testuser2",
               password: "testplpassword",
               networks: "{{ clickhouse_networks_default }}",
               profile: "default",
               quota: "default",
-              dbs: {testu2} ,
+              dbs: [ testu2 ] ,
               comment: "classic user with hex password"}
           - { name: "testuser3",
               password: "testplpassword",
               networks: { 192.168.0.0/24, 10.0.0.0/8 },
               profile: "default",
               quota: "default",
-              dbs: {testu1,testu2,testu3} ,
+              dbs: [ testu1,testu2,testu3 ] ,
               comment: "classic user with multi dbs and multi-custom network allow password"}
       clickhouse_dbs_custom:
-         - testu1
-         - testu2
-         - testu3
+         - { name: testu1 }
+         - { name: testu2, state:present }
+         - { name: testu3, state:absent }
     roles:
       - ansible-clickhouse
 ```
