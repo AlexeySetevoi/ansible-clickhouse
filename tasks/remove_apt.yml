@@ -15,10 +15,10 @@
     state: absent
   become: true
 
-- name: Uninstall by APT | Apt-key remove yandex repo key
+- name: Uninstall by APT | Apt-key remove repo key
   apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: E0C56BD4
+    keyserver: "{{ clickhouse_repo_keyserver }}"
+    id: "{{ clickhouse_repo_key }}"
     state: absent
   become: true
 
