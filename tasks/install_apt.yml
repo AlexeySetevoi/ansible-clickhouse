@@ -1,10 +1,10 @@
 #Main installation actions
 #https://clickhouse.yandex/docs/en/getting_started/index.html#installation
 
-- name: Install by APT | Apt-key add yandex repo key
+- name: Install by APT | Apt-key add repo key
   apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: E0C56BD4
+    keyserver: "{{ clickhouse_repo_keyserver }}"
+    id: "{{ clickhouse_repo_key }}"
   become: true
 
 - name: Install by APT | Repo installation

@@ -1,4 +1,6 @@
 clickhouse_supported: yes
+clickhouse_repo_keyserver: keyserver.ubuntu.com
+clickhouse_repo_key: E0C56BD4
 clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/trusty stable main"
 clickhouse_package:
   - clickhouse-client
