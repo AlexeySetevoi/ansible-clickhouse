@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!-- {{ ansible_managed }} -->
+<dictionaries>
+{% for dict in clickhouse_dicts %}
+ <dictionary>
+   <name>{{ clickhouse_dicts[dict].name }}</name>
+   <source>
+    <odbc>
+     <connection_string>{{ clickhouse_dicts[dict].odbc_source.connection_string }}</connection_string>
+     <table>{{ clickhouse_dicts[dict].odbc_source.source_table }}</table>
+    </odbc>
+   </source>
+   <lifetime>
+     <min>{{ clickhouse_dicts[dict].lifetime.min|default(300)}}</min>
+     <max>{{ clickhouse_dicts[dict].lifetime.max|default(600)}}</max>
+   </lifetime>
+   <layout>
+     <{{ clickhouse_dicts[dict].layout|default("hashed") }}/>
+   </layout>
+   <structure>
+{% if clickhouse_dicts[dict].structure.key.attributes is defined %}
+     <key>
+{% for attribute in clickhouse_dicts[dict].structure.key.attributes %}
+     <attribute>
+       <name>{{ attribute.name }}</name>
+       <type>{{ attribute.type }}</type>
+     </attribute>
+{% endfor %}
+     </key>
+{% else %}
+     <id>
+       <name>{{ clickhouse_dicts[dict].structure.key }}</name>
+     </id>
+{% endif %}
+{% for attribute in clickhouse_dicts[dict].structure.attributes %}
+     <attribute>
+       <name>{{ attribute.name }}</name>
+       <type>{{ attribute.type }}</type>
+       <null_value>{{ attribute.null_value }}</null_value>
+     </attribute>
+{% endfor %}
+   </structure>
+ </dictionary>
+{% endfor %}
+</dictionaries>

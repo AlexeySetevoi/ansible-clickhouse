@@ -100,6 +100,39 @@ clickhouse_dbs_custom:
       - { name: testu4, state: present }
 ```
 
+F: You can create dictionary via odbc
+```
+clickhouse_dicts:
+          test1:
+            name: test_dict
+            odbc_source:
+              connection_string: "DSN=testdb"
+              source_table: "dict_source"
+            lifetime:
+              min: 300
+              max: 360
+            layout: hashed
+            structure:
+              key: "testIntKey"
+              attributes:
+                - { name: testAttrName, type: UInt32, null_value: 0 }
+          test2:
+            name: test_dict
+            odbc_source:
+              connection_string: "DSN=testdb"
+              source_table: "dict_source"
+            lifetime:
+              min: 300
+              max: 360
+            layout: complex_key_hashed
+            structure:
+              key:
+                attributes:
+                  - { name: testAttrComplexName, type: String }
+              attributes:
+                - { name: testAttrName, type: String, null_value: "" }
+```
+
 F: Flag for remove clickhouse from host(disabled by default)
 ```yaml
 clickhouse_remove: no
@@ -135,6 +168,35 @@ Including an example of how to use your role (for instance, with variables passe
               quota: "default",
               dbs: [ testu1,testu2,testu3 ] ,
               comment: "classic user with multi dbs and multi-custom network allow password"}
+      clickhouse_dicts:
+          test1:
+            name: test_dict
+            odbc_source:
+              connection_string: "DSN=testdb"
+              source_table: "dict_source"
+            lifetime:
+              min: 300
+              max: 360
+            layout: hashed
+            structure:
+              key: "testIntKey"
+              attributes:
+                - { name: testAttrName, type: UInt32, null_value: 0 }
+          test2:
+            name: test_dict
+            odbc_source:
+              connection_string: "DSN=testdb"
+              source_table: "dict_source"
+            lifetime:
+              min: 300
+              max: 360
+            layout: complex_key_hashed
+            structure:
+              key:
+                attributes:
+                  - { name: testAttrComplexName, type: String }
+              attributes:
+                - { name: testAttrName, type: String, null_value: "" }
       clickhouse_dbs_custom:
          - { name: testu1 }
          - { name: testu2, state:present }
@@ -150,6 +212,7 @@ Tag | Action
 install | Only installation of packages
 config_sys | Only configuration system configs(users.xml and config.xml)
 config_db | Only add&remove databases
+config_sys / Only regenerate dicts
 config | config_sys+config_db
 
 License
