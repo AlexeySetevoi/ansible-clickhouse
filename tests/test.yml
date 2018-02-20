@@ -32,5 +32,34 @@
       - { name: testu3 }
       - { name: testu4, state: absent }
       - { name: testu4, state: present }
+    clickhouse_dicts:
+      test1:
+        name: test_dict
+        odbc_source:
+          connection_string: "DSN=testdb"
+          source_table: "dict_source"
+        lifetime:
+          min: 300
+          max: 360
+        layout: hashed
+        structure:
+          key: "testIntKey"
+          attributes:
+            - { name: testAttrName, type: UInt32, null_value: 0 }
+      test2:
+        name: test_dict
+        odbc_source:
+          connection_string: "DSN=testdb"
+          source_table: "dict_source"
+        lifetime:
+          min: 300
+          max: 360
+        layout: complex_key_hashed
+        structure:
+          key:
+            attributes:
+              - { name: testAttrComplexName, type: String }
+          attributes:
+            - { name: testAttrName, type: String, null_value: "" }
   roles:
     - ansible-clickhouse
