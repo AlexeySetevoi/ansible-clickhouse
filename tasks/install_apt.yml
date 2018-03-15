@@ -7,6 +7,12 @@
     id: "{{ clickhouse_repo_key }}"
   become: true
 
+- name: Install by APT | Remove old repo link of exists
+  apt_repository:
+    repo: "{{ clickhouse_repo_old }}"
+    state: absent
+  become: true
+
 - name: Install by APT | Repo installation
   apt_repository:
     repo: "{{ clickhouse_repo }}"
