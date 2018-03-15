@@ -15,8 +15,8 @@
     <!-- Custom profiles. -->
     {% for dict_item in clickhouse_profiles_custom %}
     <{{ dict_item }}>
-    {% for item in clickhouse_profiles_default[dict_item] %}
-        <{{ item }}>{{ clickhouse_profiles_default[dict_item][item] }}</{{ item }}>
+    {% for item in clickhouse_profiles_custom[dict_item] %}
+        <{{ item }}>{{ clickhouse_profiles_custom[dict_item][item] }}</{{ item }}>
     {% endfor %}
     </{{ dict_item }}>
     {% endfor %}
