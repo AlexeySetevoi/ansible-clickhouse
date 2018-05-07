@@ -8,7 +8,7 @@
 - name: Config | Delete database config
   command: "clickhouse-client -h localhost -q 'DROP DATABASE IF EXISTS `{{ item.name }}`'"
   with_items: "{{ clickhouse_dbs }}"
-  when: item.state is defined and item.state == 'absent' and item.name in existing_databases.stdout.lines_lines
+  when: item.state is defined and item.state == 'absent' and item.name in existing_databases.stdout_lines
   tags: [config_db]
 
 - name: Config | Create database config

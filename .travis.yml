@@ -26,8 +26,8 @@ addons:
 env:
   - ANSIBLE_VERSION='ansible>=2.4,<2.5'
   - ANSIBLE_VERSION='ansible>=2.3,<2.4'
-  - ANSIBLE_VERSION=latest
   - ANSIBLE_VERSION='ansible>=2.2,<2.3'
+  - ANSIBLE_VERSION='latest'
 
 install:
   # Install ansible
@@ -37,7 +37,7 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - printf '[defaults]\nroles_path=../' >ansible.cfgq
 
 script:
   # Basic role syntax check

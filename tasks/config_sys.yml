@@ -16,6 +16,8 @@
   template:
    src: config.j2
    dest: "{{ clickhouse_path_configdir }}/config.xml"
+   owner: clickhouse
+   group: clickhouse
   notify: restart-ch
   become: true
 
@@ -23,6 +25,8 @@
   template:
    src: users.j2
    dest: "{{ clickhouse_path_configdir }}/users.xml"
+   owner: clickhouse
+   group: clickhouse
   notify: restart-ch
   become: true
 
