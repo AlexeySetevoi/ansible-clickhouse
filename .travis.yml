@@ -7,12 +7,39 @@ matrix:
     - os: linux
       dist: trusty
       sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+    - os: linux
+      dist: trusty
+      sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+    - os: linux
+      dist: trusty
+      sudo: true
+      env: ANSIBLE_VERSION='latest'
     - os: linux
       dist: xenial
       sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+    - os: linux
+      dist: xenial
+      sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+    - os: linux
+      dist: xenial
+      sudo: true
+      env: ANSIBLE_VERSION='latest'
     - os: linux
       dist: precise
       sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+    - os: linux
+      dist: precise
+      sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+    - os: linux
+      dist: precise
+      sudo: true
+      env: ANSIBLE_VERSION='latest'
 
 # Use the new container infrastructure
 sudo: true
@@ -23,11 +50,6 @@ addons:
     packages:
     - python-pip
 
-env:
-  - ANSIBLE_VERSION='ansible>=2.4,<2.5'
-  - ANSIBLE_VERSION='ansible>=2.3,<2.4'
-  - ANSIBLE_VERSION='latest'
-
 install:
   # Install ansible
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install $ANSIBLE_VERSION; fi
@@ -36,7 +58,7 @@ install:
   - ansible --version
 
   # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfgq
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
   # Basic role syntax check
