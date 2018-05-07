@@ -226,3 +226,5 @@ Author Information
 [ClickHouse](https://clickhouse.yandex/docs/en/index.html) by [Yandex LLC](https://yandex.ru/company/).
 
 Role by [AlexeySetevoi](https://github.com/AlexeySetevoi).
+
+Dear contributors, thank you.
