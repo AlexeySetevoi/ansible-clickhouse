@@ -23,9 +23,15 @@ addons:
     packages:
     - python-pip
 
+env:
+  - ANSIBLE_VERSION='ansible>=2.4,<2.5'
+  - ANSIBLE_VERSION='ansible>=2.3,<2.4'
+  - ANSIBLE_VERSION=latest
+  - ANSIBLE_VERSION='ansible>=2.2,<2.3'
+
 install:
   # Install ansible
-  - sudo pip install ansible
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install $ANSIBLE_VERSION; fi
 
   # Check ansible version
   - ansible --version
