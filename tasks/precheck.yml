@@ -2,6 +2,7 @@
 
 - name: Requirements check | Checking sse4_2 support
   command: grep -q sse4_2 /proc/cpuinfo
+  changed_when: False
 
 - name: Requirements check | Not supported distribution && release
   fail:
@@ -13,6 +14,4 @@
   register: clickhouse_rt_isinstalled
   ignore_errors: yes
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
-
-
-
+  changed_when: False
