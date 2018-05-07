@@ -11,7 +11,7 @@ matrix:
     - os: linux
       dist: trusty
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+      env: ANSIBLE_VERSION='ansible>=2.3,<2.4'
     - os: linux
       dist: trusty
       sudo: true
@@ -23,7 +23,7 @@ matrix:
     - os: linux
       dist: xenial
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+      env: ANSIBLE_VERSION='ansible>=2.3,<2.4'
     - os: linux
       dist: xenial
       sudo: true
@@ -35,7 +35,7 @@ matrix:
     - os: linux
       dist: precise
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+      env: ANSIBLE_VERSION='ansible>=2.3,<2.4'
     - os: linux
       dist: precise
       sudo: true
