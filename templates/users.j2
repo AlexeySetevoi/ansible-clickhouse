@@ -43,8 +43,8 @@
         <ip>{{ net }}</ip>
         {% endfor %}
         </networks>
-        <profile>{{ user.profile }}</profile>
-        <quota>{{ user.quota }}</quota>
+        <profile>{{ user.profile|default(clickhouse_default_user_profile) }}</profile>
+        <quota>{{ user.quota|default(clickhouse_default_user_quota) }}</quota>
         {% if user.dbs is defined %}
          <allow_databases>
         {% for db in user.dbs %}

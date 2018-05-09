@@ -78,4 +78,5 @@ clickhouse_config:
   default_session_timeout: 60
 
 clickhouse_dicts: []
-
+clickhouse_default_user_profile: default
+clickhouse_default_user_quota: default
