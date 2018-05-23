@@ -32,6 +32,7 @@
 
 - name: Config | Create conf.d directory
   file:
+   state: directory
    path: "{{ clickhouse_path_configdir }}/conf.d"
    owner: clickhouse
    group: clickhouse
