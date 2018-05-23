@@ -30,6 +30,23 @@
   notify: restart-ch
   become: true
 
+- name: Config | Create conf.d directory
+  file:
+   path: "{{ clickhouse_path_configdir }}/conf.d"
+   owner: clickhouse
+   group: clickhouse
+   mode: 0644
+
+- name: Config | Generate remote_servers config
+  template:
+   src: remote_servers.j2
+   dest: "{{ clickhouse_path_configdir }}/conf.d/remote_servers.xml"
+   owner: clickhouse
+   group: clickhouse
+  notify: restart-ch
+  become: true
+  when: clickhouse_shards is defined 
+
 - meta: flush_handlers
 
 

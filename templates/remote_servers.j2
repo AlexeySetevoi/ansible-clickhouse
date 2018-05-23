@@ -1,0 +1,18 @@
+<yandex>
+  <remote_servers>
+{% for shard_name, shards in clickhouse_shards %}
+    <{{ shard_name }}>
+{% for shard in shards %}
+      <shard>
+{% for replica in shard['replicas'] %>
+        <replica>
+          <host>{{ replica['host'] }}</host>
+          <port>{{ replica['port'] | default(9000) }}</port>
+        </replica>
+{% endfor %}
+      </shard>
+{% endfor %}
+    </{{ shard_name }}>
+{% endfor %}
+  </remote_servers>
+</yandex>
