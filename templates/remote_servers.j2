@@ -1,6 +1,6 @@
 <yandex>
   <remote_servers>
-{% for shard_name, shards in clickhouse_shards %}
+{% for shard_name, shards in clickhouse_shards.iteritems() %}
     <{{ shard_name }}>
 {% for shard in shards %}
       <shard>

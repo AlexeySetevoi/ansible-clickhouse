@@ -35,7 +35,7 @@
    path: "{{ clickhouse_path_configdir }}/conf.d"
    owner: clickhouse
    group: clickhouse
-   mode: 0644
+   mode: 0755
 
 - name: Config | Generate remote_servers config
   template:
