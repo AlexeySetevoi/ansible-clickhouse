@@ -4,7 +4,7 @@
     <{{ shard_name }}>
 {% for shard in shards %}
       <shard>
-{% for replica in shard['replicas'] %>
+{% for replica in shard['replicas'] %}
         <replica>
           <host>{{ replica['host'] }}</host>
           <port>{{ replica['port'] | default(9000) }}</port>
