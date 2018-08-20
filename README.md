@@ -1,4 +1,4 @@
-ansible-clickhouse [![Build Status](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse.svg?branch=master)](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse)
+ansible-clickhouse [![Build Status](https://travis-ci.org/krzyzakp/ansible-clickhouse.svg?branch=master)](https://travis-ci.org/krzyzakp/ansible-clickhouse)
 =========
 
 Simple clickhouse-server deploy and management role.
