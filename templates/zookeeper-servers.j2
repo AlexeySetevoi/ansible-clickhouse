@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<yandex>
+  <zookeeper>
+  {% for server in clickhouse_zookeeper_nodes %}
+    <node>
+    {% for key, value in server.items() %}
+        <{{ key }}>{{ value }}</{{ key }}>
+    {$ endfor %}
+    </node>
+  {% endfor %}
+  </zookeeper>
+</yandex>
+

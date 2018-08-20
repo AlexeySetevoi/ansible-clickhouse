@@ -48,7 +48,26 @@
   become: true
   when: clickhouse_shards is defined 
 
+- name: Config | Generate macros config
+  template:
+    src: macros.j2
+    dest: "{{ clickhouse_path_configdir }}/conf.d/macros.xml"
+    owner: clickhouse
+    group: clickhouse
+    mode: 0644
+  notify: restart-ch
+  become: true
+  when: clickhouse_macros is defined 
+
+- name: Config | Generate zookeeper servers config
+  template:
+    src: zookeeper-servers.j2
+    dest: "{{ clickhouse_path_configdir }}/conf.d/zookeeper-servers.j2"
+    owner: clickhouse
+    group: clickhouse
+    mode: 0644
+  notify: restart-ch
+  become: true
+  when: clickhouse_zookeeper_nodes is defined 
+
 - meta: flush_handlers
-
-
-
