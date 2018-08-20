@@ -1,14 +1,12 @@
 clickhouse_supported: yes
 clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/deb/stable/ main/"
-clickhouse_repo_old: "deb http://repo.yandex.ru/clickhouse/xenial stable main"
 clickhouse_repo_keyserver: keyserver.ubuntu.com
 clickhouse_repo_key: E0C56BD4
 clickhouse_package:
   - clickhouse-client
-  - clickhouse-server
   - clickhouse-common-static
+  - clickhouse-server
 clickhouse_path_configdir: "/etc/clickhouse-server"
 clickhouse_path_logdir: "/var/log/clickhouse-server"
 clickhouse_path_data: "/var/lib/clickhouse/"
 clickhouse_path_tmp: "/var/lib/clickhouse/tmp/"
-
