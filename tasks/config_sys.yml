@@ -15,7 +15,7 @@
 - name: Config | Generate system config
   template:
     src: config.j2
-    dest: "{{ clickhouse_path_configdir }}/config.xml__"
+    dest: "{{ clickhouse_path_configdir }}/config.xml"
     owner: clickhouse
     group: clickhouse
   notify: restart-ch
