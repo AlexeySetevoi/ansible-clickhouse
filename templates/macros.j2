@@ -2,8 +2,8 @@
 <!-- {{ ansible_managed }} -->
 <yandex>
   <macros>
-  {% for key, value in clickhouse_macros.items() %}
+{% for key, value in clickhouse_macros.items() %}
     <{{ key }}>{{ value }}</{{ key }}>
-  {% endfor %}
+{% endfor %}
   </macros>
 </yandex>

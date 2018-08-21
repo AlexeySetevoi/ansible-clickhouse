@@ -2,12 +2,12 @@
 <!-- {{ ansible_managed }} -->
 <yandex>
   <zookeeper>
-  {% for server in clickhouse_zookeeper_nodes %}
+{% for server in clickhouse_zookeeper_nodes %}
     <node>
-    {% for key, value in server.items() %}
-        <{{ key }}>{{ value }}</{{ key }}>
-    {% endfor %}
+{% for key, value in server.items() %}
+      <{{ key }}>{{ value }}</{{ key }}>
+{% endfor %}
     </node>
-  {% endfor %}
+{% endfor %}
   </zookeeper>
 </yandex>

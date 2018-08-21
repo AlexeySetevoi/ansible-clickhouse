@@ -14,28 +14,28 @@
 
 - name: Config | Generate system config
   template:
-   src: config.j2
-   dest: "{{ clickhouse_path_configdir }}/config.xml"
-   owner: clickhouse
-   group: clickhouse
+    src: config.j2
+    dest: "{{ clickhouse_path_configdir }}/config.xml__"
+    owner: clickhouse
+    group: clickhouse
   notify: restart-ch
   become: true
 
 - name: Config | Generate users config
   template:
-   src: users.j2
-   dest: "{{ clickhouse_path_configdir }}/users.xml"
-   owner: clickhouse
-   group: clickhouse
+    src: users.j2
+    dest: "{{ clickhouse_path_configdir }}/users.xml"
+    owner: clickhouse
+    group: clickhouse
   notify: restart-ch
   become: true
 
 - name: Config | Generate remote_servers config
   template:
-   src: remote_servers.j2
-   dest: "{{ clickhouse_path_configdir }}/conf.d/remote_servers.xml"
-   owner: clickhouse
-   group: clickhouse
+    src: remote_servers.j2
+    dest: "{{ clickhouse_path_configdir }}/conf.d/clickhouse_remote_servers.xml"
+    owner: clickhouse
+    group: clickhouse
   notify: restart-ch
   become: true
   when: clickhouse_shards is defined 
@@ -54,7 +54,7 @@
 - name: Config | Generate zookeeper servers config
   template:
     src: zookeeper-servers.j2
-    dest: "{{ clickhouse_path_configdir }}/conf.d/zookeeper-servers.j2"
+    dest: "{{ clickhouse_path_configdir }}/conf.d/zookeeper-servers.xml"
     owner: clickhouse
     group: clickhouse
     mode: 0644
