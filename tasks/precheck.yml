@@ -15,3 +15,4 @@
   ignore_errors: yes
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
   changed_when: False
+  check_mode: no
