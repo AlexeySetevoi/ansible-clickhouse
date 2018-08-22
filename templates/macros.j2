@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- {{ ansible_managed }} -->
+<yandex>
+  <macros>
+{% for key, value in clickhouse_macros.items() %}
+    <{{ key }}>{{ value }}</{{ key }}>
+{% endfor %}
+  </macros>
+</yandex>

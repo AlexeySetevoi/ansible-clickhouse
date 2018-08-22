@@ -1,6 +1,6 @@
 ---
 - name: Gather list of existing databases
-  command: "clickhouse-client -h localhost -q 'show databases'"
+  command: "clickhouse-client -h 127.0.0.1 -q 'show databases'"
   changed_when: False
   register: existing_databases
   tags: [config_db]
@@ -12,7 +12,7 @@
   tags: [config_db]
 
 - name: Config | Create database config
-  command: "clickhouse-client -h localhost -q 'CREATE DATABASE IF NOT EXISTS `{{ item.name }}`'"
+  command: "clickhouse-client -h 127.0.0.1 -q 'CREATE DATABASE IF NOT EXISTS `{{ item.name }}`'"
   with_items: "{{ clickhouse_dbs }}"
   when: (item.state is undefined or item.state == 'present') and item.name not in existing_databases.stdout_lines
   tags: [config_db]

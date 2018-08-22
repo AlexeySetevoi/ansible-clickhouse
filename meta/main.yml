@@ -11,7 +11,10 @@ galaxy_info:
       versions:
         - xenial
         - trusty
-        - precise
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
         
   galaxy_tags:
     - clickhouse

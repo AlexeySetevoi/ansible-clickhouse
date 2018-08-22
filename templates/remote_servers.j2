@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- {{ ansible_managed }} -->
+<yandex>
+  <remote_servers>
+{% for shard_name, replicas in clickhouse_shards.iteritems() %}
+    <{{ shard_name }}>
+      <shard>
+        <internal_replication>true</internal_replication>
+{% for replica in replicas %}
+        <replica>
+          <host>{{ replica['host'] }}</host>
+          <port>{{ replica['port'] | default(9000) }}</port>
+        </replica>
+{% endfor %}
+      </shard>
+    </{{ shard_name }}>
+{% endfor %}
+  </remote_servers>
+</yandex>
