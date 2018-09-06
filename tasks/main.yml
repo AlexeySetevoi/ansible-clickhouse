@@ -1,10 +1,5 @@
 ---
 # tasks file for clickhouse
-- include_vars: "{{ item }}"
-  with_first_found:
-    - "../vars/{{ ansible_distribution }}_{{ ansible_distribution_release }}.yml"
-    - "../vars/empty.yml"
-  tags: [always]
 
 - include: precheck.yml
   tags: [precheck,install]
