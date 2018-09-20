@@ -31,5 +31,5 @@
     - "{{ clickhouse_path_configdir }}"
     - "{{ clickhouse_path_tmp }}"
     - "{{ clickhouse_path_data }}"
-  become: true
+  become: "{{ clickhouse_become }}"
   when: clickhouse_remove_full|bool == True
