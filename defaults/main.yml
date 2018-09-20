@@ -3,6 +3,8 @@
 
 #Flag for using become root
 clickhouse_become: true
+#Flag for running restart handler
+clickhouse_restart: true
 #Flag for using with requirements check
 clickhouse_supported: no
 #Type of installation (package,source)
