@@ -1,6 +1,8 @@
 ---
 # defaults file for clickhouse
 
+#Flag for using become root
+clickhouse_become: true
 #Flag for using with requirements check
 clickhouse_supported: no
 #Type of installation (package,source)

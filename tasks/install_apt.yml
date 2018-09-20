@@ -5,23 +5,23 @@
   apt_key:
     keyserver: "{{ clickhouse_repo_keyserver }}"
     id: "{{ clickhouse_repo_key }}"
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Install by APT | Remove old repo link of exists
   apt_repository:
     repo: "{{ clickhouse_repo_old }}"
     state: absent
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Install by APT | Repo installation
   apt_repository:
     repo: "{{ clickhouse_repo }}"
     state: present
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Install by APT | Package installation
   apt:
     name: "{{ item }}"
     state: latest
   with_items: "{{ clickhouse_package }}"
-  become: true
+  become: "{{ clickhouse_become }}"
