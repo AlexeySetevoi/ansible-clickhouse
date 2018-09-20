@@ -7,20 +7,20 @@
     state: absent
     purge: yes
   with_items: "{{ clickhouse_package }}"
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Uninstall by APT | Repo uninstallation
   apt_repository:
     repo: "{{ clickhouse_repo }}"
     state: absent
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Uninstall by APT | Apt-key remove repo key
   apt_key:
     keyserver: "{{ clickhouse_repo_keyserver }}"
     id: "{{ clickhouse_repo_key }}"
     state: absent
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Remove clickhouse config,data and logs
   file:

@@ -4,4 +4,4 @@
   service:
     name: "clickhouse-server"
     state: restarted
-  become: true
+  become: "{{ clickhouse_become }}"

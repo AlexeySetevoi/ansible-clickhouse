@@ -10,7 +10,7 @@
     - "{{ clickhouse_path_tmp }}"
     - "{{ clickhouse_path_data }}"
   notify: restart-ch
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Config | Generate system config
   template:
@@ -19,7 +19,7 @@
     owner: clickhouse
     group: clickhouse
   notify: restart-ch
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Config | Generate users config
   template:
@@ -28,7 +28,7 @@
     owner: clickhouse
     group: clickhouse
   notify: restart-ch
-  become: true
+  become: "{{ clickhouse_become }}"
 
 - name: Config | Generate remote_servers config
   template:
@@ -37,7 +37,7 @@
     owner: clickhouse
     group: clickhouse
   notify: restart-ch
-  become: true
+  become: "{{ clickhouse_become }}"
   when: clickhouse_shards is defined 
 
 - name: Config | Generate macros config
@@ -48,7 +48,7 @@
     group: clickhouse
     mode: 0644
   notify: restart-ch
-  become: true
+  become: "{{ clickhouse_become }}"
   when: clickhouse_macros is defined 
 
 - name: Config | Generate zookeeper servers config
@@ -59,7 +59,7 @@
     group: clickhouse
     mode: 0644
   notify: restart-ch
-  become: true
+  become: "{{ clickhouse_become }}"
   when: clickhouse_zookeeper_nodes is defined 
 
 - meta: flush_handlers
