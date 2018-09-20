@@ -2,4 +2,4 @@
   template:
    src: dicts.j2
    dest: "{{ clickhouse_path_configdir }}/auto_dictionary.xml"
-  become: true
+  become: "{{ clickhouse_become }}"
