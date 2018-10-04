@@ -27,6 +27,9 @@
   when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_sys]
 
+- name: Wait DBMS ready
+  command: sleep 1
+
 - include: config_db.yml
   when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_db]
