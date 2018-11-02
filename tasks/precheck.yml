@@ -16,3 +16,17 @@
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
   changed_when: False
   check_mode: no
+
+- set_fact:
+    ch_installed: '{{ clickhouse_rt_isinstalled.rc }}'
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
+
+- name: Check if rpm is already installed
+  yum:
+    list: "{{ clickhouse_package[0] }}"
+  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package'
+  register: yum_list
+
+- set_fact:
+    ch_installed: '{{ yum_list.results | selectattr("yumstate", "match", "installed") | list | length == 0 }}'
+  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package'

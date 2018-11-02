@@ -1,0 +1,20 @@
+- name: Install by YUM | Add repository
+  yum_repository:
+    name: altinity_clickhouse
+    description: Yandex Clickhouse packages built by Altinity
+    baseurl: "{{ clickhouse_repo }}"
+    gpgcheck: no
+    enabled: yes
+    sslcacert: "{{ clickhouse_sslcacert }}"
+    gpgkey: "{{ clickhouse_gpgkey }}"
+    repo_gpgcheck: yes
+  become: true
+
+- name: Install by YUM | Install clickhouse packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ clickhouse_package }}"
+  become: true
+
+

@@ -9,6 +9,7 @@
     - "{{ clickhouse_path_configdir }}"
     - "{{ clickhouse_path_tmp }}"
     - "{{ clickhouse_path_data }}"
+    - "{{ clickhouse_path_configdir }}/conf.d"
   notify: restart-ch
   become: true
 

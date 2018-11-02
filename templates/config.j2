@@ -108,6 +108,10 @@
     <!-- Default database. -->
     <default_database>default</default_database>
 
+    <!-- Useful for lxc/Docker. -->
+    {% if clickhouse_listen_reuse_port is defined %}
+    <listen_reuse_port>{{ clickhouse_listen_reuse_port }}</listen_reuse_port>
+    {% endif %}
     <!-- Server time zone could be set here.
 
          Time zone is used when converting between String and DateTime types,
@@ -281,7 +285,7 @@
     -->
     <!-- <max_table_size_to_drop>0</max_table_size_to_drop> -->
 
-    <!-- Example of parameters for GraphiteMergeTree table engine -->
+    <!-- Example of parameters for GraphiteMergeTree table engine 
     <graphite_rollup_example>
         <pattern>
             <regexp>click_cost</regexp>
@@ -311,7 +315,7 @@
             </retention>
         </default>
     </graphite_rollup_example>
-
+    -->
   <format_schema_path>/var/lib/clickhouse/format_schemas/</format_schema_path>
 
 </yandex>

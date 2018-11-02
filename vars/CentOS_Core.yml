@@ -1,0 +1,13 @@
+clickhouse_supported: yes
+clickhouse_repo: "https://packagecloud.io/altinity/clickhouse/el/7/$basearch"
+clickhouse_gpgkey: "https://packagecloud.io/altinity/clickhouse/gpgkey"
+clickhouse_sslcacert: "/etc/pki/tls/certs/ca-bundle.crt"
+clickhouse_package:
+    - clickhouse-server
+    - clickhouse-server-common
+    - clickhouse-client
+    - clickhouse-compressor
+clickhouse_path_configdir: "/etc/clickhouse-server"
+clickhouse_path_logdir: "/var/log/clickhouse-server"
+clickhouse_path_data: "/var/lib/clickhouse/"
+clickhouse_path_tmp: "/var/lib/clickhouse/tmp/"

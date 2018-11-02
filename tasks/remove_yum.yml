@@ -1,28 +1,20 @@
 #Main installation actions
 #https://clickhouse.yandex/docs/en/getting_started/index.html#installation
 
-- name: Uninstall by APT | Package uninstallation
-  apt:
+- name: Uninstall by YUM | Package uninstallation
+  yum:
     name: "{{ item }}"
     state: absent
-    purge: yes
   with_items: "{{ clickhouse_package }}"
   become: true
 
-- name: Uninstall by APT | Repo uninstallation
-  apt_repository:
-    repo: "{{ clickhouse_repo }}"
+- name: Uninstall by YUM | Remove repository
+  yum_repository:
+    name: altinity_clickhouse
     state: absent
   become: true
 
-- name: Uninstall by APT | Apt-key remove repo key
-  apt_key:
-    keyserver: "{{ clickhouse_repo_keyserver }}"
-    id: "{{ clickhouse_repo_key }}"
-    state: absent
-  become: true
-
-- name: Uninstall by APT | Remove clickhouse config,data and logs
+- name: Uninstall by YUM | Remove clickhouse config,data and logs
   file:
     dest: "{{ item }}"
     state: absent
