@@ -12,6 +12,7 @@
     repo: "{{ clickhouse_repo_old }}"
     state: absent
   become: true
+  when: clickhouse_repo_old is defined
 
 - name: Install by APT | Repo installation
   apt_repository:
