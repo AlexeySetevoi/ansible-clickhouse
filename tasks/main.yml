@@ -1,6 +1,7 @@
 ---
 # tasks file for clickhouse
-- include_vars: "{{ item }}"
+- name: Importing distribution variables
+  include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_distribution }}_{{ ansible_distribution_release }}.yml"
     - "../vars/empty.yml"
@@ -13,27 +14,28 @@
   debug: var=clickhouse_rt_isinstalled.rc
 
 - include: install_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc !=0 and clickhouse_remove|bool == False
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc !=0 and not clickhouse_remove|bool
   tags: [install]
 
 - include: remove_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == True
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc == 0 and not clickhouse_remove|bool
   tags: [remove]
 
 - include: precheck.yml
   tags: [precheck,config,config_sys,config_db,config_dict]
 
 - include: config_sys.yml
-  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  when: clickhouse_rt_isinstalled.rc == 0 and not clickhouse_remove|bool
   tags: [config,config_sys]
 
 - name: Wait DBMS ready
   command: sleep 1
+  changed_when: False
 
 - include: config_db.yml
-  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  when: clickhouse_rt_isinstalled.rc == 0 and not clickhouse_remove|bool
   tags: [config,config_db]
 
 - include: config_dict.yml
-  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  when: clickhouse_rt_isinstalled.rc == 0 and not clickhouse_remove|bool
   tags: [config,config_dict]

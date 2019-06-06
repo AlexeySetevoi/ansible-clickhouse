@@ -38,7 +38,7 @@
     group: clickhouse
   notify: restart-ch
   become: true
-  when: clickhouse_shards is defined 
+  when: clickhouse_shards is defined
 
 - name: Config | Generate macros config
   template:
@@ -49,7 +49,7 @@
     mode: 0644
   notify: restart-ch
   become: true
-  when: clickhouse_macros is defined 
+  when: clickhouse_macros is defined
 
 - name: Config | Generate zookeeper servers config
   template:
@@ -60,6 +60,6 @@
     mode: 0644
   notify: restart-ch
   become: true
-  when: clickhouse_zookeeper_nodes is defined 
+  when: clickhouse_zookeeper_nodes is defined
 
 - meta: flush_handlers

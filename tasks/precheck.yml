@@ -7,10 +7,10 @@
 - name: Requirements check | Not supported distribution && release
   fail:
     msg: "Your distribution {{ ansible_distribution }}_{{ ansible_distribution_release }} not supported by this role,sorry."
-  when: clickhouse_supported|bool != True
+  when: not clickhouse_supported|bool
 
 - name: Requirements check | Check if Clickhouse is installed
-  shell: dpkg-query -f '${Package} ' -W |grep -q "{{ clickhouse_package| join(" ")}}"
+  shell: dpkg-query -f '${Package} ' -W |grep -q "{{ clickhouse_package | join(" ") }}"
   register: clickhouse_rt_isinstalled
   ignore_errors: yes
   when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
