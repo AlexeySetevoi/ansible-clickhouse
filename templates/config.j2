@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- {{ ansible_managed }} -->
 <yandex>
     <logger>
         <level>{{ clickhouse_logger.level }}</level>
@@ -58,12 +59,14 @@
     <!--
     <interserver_http_host>example.yandex.ru</interserver_http_host>
     -->
-
+{% if clickhouse_interserver_http_host is defined %}
+    <interserver_http_host>{{ clickhouse_interserver_http_host }}</interserver_http_host>
+{% endif %}
     <!-- Listen specified host. use :: (wildcard IPv6 address), if you want to accept connections both with IPv4 and IPv6 from everywhere. -->
     <!-- <listen_host>::</listen_host> -->
-    {% for host in clickhouse_listen_host %}
+{% for host in clickhouse_listen_host %}
     <listen_host>{{ host }}</listen_host>
-    {% endfor %}
+{% endfor %}
 
     <max_connections>{{ clickhouse_config.max_connections }}</max_connections>
     <keep_alive_timeout>{{ clickhouse_config.keep_alive_timeout }}</keep_alive_timeout>
@@ -94,7 +97,8 @@
 
     <!-- Path to temporary data for processing hard queries. -->
     <tmp_path>{{ clickhouse_path_tmp }}</tmp_path>
-
+  
+    <user_files_path>{{ clickhouse_path_user_files }}</user_files_path>
     <!-- Path to configuration file with users, access rights, profiles of settings, quotas. -->
     <users_config>users.xml</users_config>
 
@@ -201,7 +205,7 @@
         -->
         <database>system</database>
         <table>query_log</table>
-
+        <partition_by>toYYYYMM(event_date)</partition_by>
         <!-- Interval of flushing data. -->
         <flush_interval_milliseconds>7500</flush_interval_milliseconds>
     </query_log>
@@ -307,4 +311,7 @@
             </retention>
         </default>
     </graphite_rollup_example>
+
+  <format_schema_path>/var/lib/clickhouse/format_schemas/</format_schema_path>
+
 </yandex>

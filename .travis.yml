@@ -28,18 +28,6 @@ matrix:
       dist: xenial
       sudo: true
       env: ANSIBLE_VERSION='latest'
-    - os: linux
-      dist: precise
-      sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
-    - os: linux
-      dist: precise
-      sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.3,<2.4'
-    - os: linux
-      dist: precise
-      sudo: true
-      env: ANSIBLE_VERSION='latest'
 
 # Use the new container infrastructure
 sudo: true
