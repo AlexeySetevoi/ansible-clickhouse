@@ -32,6 +32,9 @@ clickhouse_http_port: 8123
 
 clickhouse_tcp_port: 9000
 
+clickhouse_https_port: 8443
+clickhouse_tcp_secure_port: 9440
+
 clickhouse_interserver_http: 9009
 
 clickhouse_networks_default:
@@ -80,3 +83,5 @@ clickhouse_config:
 clickhouse_dicts: []
 
 clickhouse_path_user_files: /var/lib/clickhouse/user_files/
+
+clickhouse_mlock_status: false
