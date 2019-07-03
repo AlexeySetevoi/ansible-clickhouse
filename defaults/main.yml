@@ -1,8 +1,29 @@
 ---
 # defaults file for clickhouse
 
-#Flag for using with requirements check
-clickhouse_supported: no
+# List of distors supported by this playbook
+clickhouse_supported_distros:
+ - 'Debian_jessie'
+ - 'Debian_stretch'
+ - 'Ubuntu_precise'
+ - 'Ubuntu_trusty'
+ - 'Ubuntu_xenial'
+ - 'Ubuntu_bionic'
+
+# Settings for apt repo
+clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/deb/stable/ main/"
+clickhouse_repo_old: "deb http://repo.yandex.ru/clickhouse/xenial stable main"
+clickhouse_repo_keyserver: keyserver.ubuntu.com
+clickhouse_repo_key: E0C56BD4
+clickhouse_package:
+  - clickhouse-client
+  - clickhouse-server-base
+  - clickhouse-server-common
+clickhouse_path_configdir: "/etc/clickhouse-server"
+clickhouse_path_logdir: "/var/log/clickhouse-server"
+clickhouse_path_data: "/var/lib/clickhouse/"
+clickhouse_path_tmp: "/var/lib/clickhouse/tmp/"
+
 #Type of installation (package,source)
 clickhouse_setup: package
 #Flag for remove clickhouse from host(disabled by default)

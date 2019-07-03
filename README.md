@@ -138,6 +138,37 @@ F: Flag for remove clickhouse from host(disabled by default)
 clickhouse_remove: no
 ```
 
+Private mirror
+--------------
+To use a private APT mirror you need to define your own repository 'string' and
+the repo key. Key may be provided as key name to download from a keyserver or
+as armored GPG public key (the key itself). To use a key from a keyring,
+variables `clickhouse_repo_key` and `clickhouse_repo_keyserver` should be provided.
+To use a key in verbatim form, `clickhouse_repo_key_data` should be provided.
+Custom mirror may be provided with `clickhouse_repo` variable.
+Examples:
+```
+clickhouse_repo: 'deb http://apt.example.com/aptly/clickhouse xenial main'
+clickhouse_repo_key: AABBCCDD
+clickhouse_repo_keyserver: keyserver.example.com
+```
+or
+```
+clickhouse_repo: 'deb http://apt.example.com/aptly/clickhouse xenial main'
+clickhouse_repo_key_data: |
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+    Version: GnuPG v1.4.12 (GNU/Linux)
+    mQANBFGspxsACADWgH5qqQtEa+Bjqd33X0PiRNcUf/Vt9m828uUuF5uRCEKruUG0
+    (few lines skipped)
+    LU/GfPzkCXlOt3Ud4L2EdvgQp/38VCNKmWi568soZnTwpjUt9AuN7iK3fm4=
+    =4dWC
+    -----END PGP PUBLIC KEY BLOCK-----
+```
+
+Please note, you need to create your mirror to be able to use it, and how to do
+this is outside of the scope of this document. You may want to try to use reprepro
+or aptly for this.
+
 Example Playbook
 ----------------
 
