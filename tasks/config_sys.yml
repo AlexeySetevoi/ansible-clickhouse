@@ -30,6 +30,14 @@
   notify: restart-ch
   become: true
 
+- name: Config | Create conf folder
+  file:
+    path: "{{ clickhouse_path_configdir }}/conf.d"
+    state: directory
+    owner: clickhouse
+    group: clickhouse
+  become: true
+
 - name: Config | Generate remote_servers config
   template:
     src: remote_servers.j2
