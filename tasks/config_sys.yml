@@ -46,7 +46,7 @@
     group: clickhouse
   notify: restart-ch
   become: true
-  when: clickhouse_shards is defined 
+  when: clickhouse_shards is defined
 
 - name: Config | Generate macros config
   template:
