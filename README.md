@@ -214,7 +214,7 @@ Including an example of how to use your role (for instance, with variables passe
       - ansible-clickhouse
 ```
 To generate macros: in file host_vars\db_host_1.yml
-```
+```yaml
 clickhouse_macros:
   layer: 01
   shard: "your_shard_name"
