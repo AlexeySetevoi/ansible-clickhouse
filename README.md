@@ -201,8 +201,24 @@ Including an example of how to use your role (for instance, with variables passe
          - { name: testu1 }
          - { name: testu2, state:present }
          - { name: testu3, state:absent }
+      clickhouse_shards:
+        your_shard_name:
+          - { host: "db_host_1", port: 9000 }
+          - { host: "db_host_2", port: 9000 }
+          - { host: "db_host_3", port: 9000 }
+      clickhouse_zookeeper_nodes:
+        - { host: "zoo_host_1", port: 2181 }
+        - { host: "zoo_host_2", port: 2181 }
+        - { host: "zoo_host_3", port: 2181 }
     roles:
       - ansible-clickhouse
+```
+To generate macros: in file host_vars\db_host_1.yml
+```
+clickhouse_macros:
+  layer: 01
+  shard: "your_shard_name"
+  replica: "db_host_1"
 ```
 
 F: You can call separately stages(from playbook, external role etc.):
