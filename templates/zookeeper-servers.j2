@@ -3,7 +3,7 @@
 <yandex>
   <zookeeper>
 {% for server in clickhouse_zookeeper_nodes %}
-    <node>
+    <node index="{{loop.index}}">
 {% for key, value in server.items() %}
       <{{ key }}>{{ value }}</{{ key }}>
 {% endfor %}
