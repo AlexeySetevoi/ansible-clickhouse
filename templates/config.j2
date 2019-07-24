@@ -74,6 +74,10 @@
     <listen_host>{{ host }}</listen_host>
 {% endfor %}
 
+{% if max_partitions_per_insert_block is defined %}
+    <max_partitions_per_insert_block>{{ max_partitions_per_insert_block }}</max_partitions_per_insert_block>
+{% endif %}
+
     <max_connections>{{ clickhouse_config.max_connections }}</max_connections>
     <keep_alive_timeout>{{ clickhouse_config.keep_alive_timeout }}</keep_alive_timeout>
 
