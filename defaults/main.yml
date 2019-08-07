@@ -89,3 +89,7 @@ clickhouse_path_user_files: "{{ clickhouse_path_base }}/clickhouse/user_files/"
 clickhouse_mlock_status: false
 
 max_partitions_per_insert_block: 100
+
+clickhouse_kafka_config: []
+
+clickhouse_kafka_topics_config: []

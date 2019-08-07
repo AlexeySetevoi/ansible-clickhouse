@@ -138,6 +138,22 @@ F: Flag for remove clickhouse from host(disabled by default)
 clickhouse_remove: no
 ```
 
+F: You can manage [Kafka configuration](https://clickhouse.yandex/docs/en/operations/table_engines/kafka/#configuration)
+```yaml
+# global configuration
+clickhouse_kafka_config:
+  auto_offset_reset: smallest
+  debug: cgrp
+# topic-level configuration
+clickhouse_kafka_topics_config:
+  topic1:
+    retry_backoff_ms: 250
+    fetch_min_bytes: 100000
+  topic2:
+    retry_backoff_ms: 300
+    fetch_min_bytes: 120000
+```
+
 Example Playbook
 ----------------
 
