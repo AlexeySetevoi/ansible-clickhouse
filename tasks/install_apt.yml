@@ -22,7 +22,7 @@
 
 - name: Install by APT | Package installation
   apt:
-    name: "{{ item }}"
-    state: latest
+    name: "{{ item }}={{ clickhouse_version }}"
+    state: present
   with_items: "{{ clickhouse_package }}"
   become: true

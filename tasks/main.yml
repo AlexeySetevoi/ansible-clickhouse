@@ -13,7 +13,7 @@
   debug: var=clickhouse_rt_isinstalled.rc
 
 - include: install_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc !=0 and clickhouse_remove|bool == False
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and (clickhouse_rt_isinstalled.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
   tags: [install]
 
 - include: remove_apt.yml
