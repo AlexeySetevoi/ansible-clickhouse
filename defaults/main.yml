@@ -93,3 +93,5 @@ max_partitions_per_insert_block: 100
 clickhouse_kafka_config: []
 
 clickhouse_kafka_topics_config: []
+
+clickhouse_merge_tree_config: []
