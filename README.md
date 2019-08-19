@@ -158,6 +158,13 @@ clickhouse_kafka_topics_config:
     fetch_min_bytes: 120000
 ```
 
+F: You can manage Merge Tree config. For the list of available parameters, see [MergeTreeSettings.h](https://github.com/yandex/ClickHouse/blob/master/dbms/src/Storages/MergeTree/MergeTreeSettings.h).
+```yaml
+clickhouse_merge_tree_config:
+  max_suspicious_broken_parts: 5
+  parts_to_throw_insert: 600
+```
+
 Example Playbook
 ----------------
 
