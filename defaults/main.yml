@@ -1,6 +1,8 @@
 ---
 # defaults file for clickhouse
 
+clickhouse_version: "*"
+
 #Flag for using with requirements check
 clickhouse_supported: no
 #Type of installation (package,source)

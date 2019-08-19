@@ -6,6 +6,10 @@ Any issues and pr are welcome.
 
 Role Variables
 --------------
+F: You can specify a particular version (or `*` for the latest). Please note that downgrade isn't supported.
+```yaml
+clickhouse_version: "19.11.3.11"
+```
 
 F: You can manage listen ports
 ```yaml
