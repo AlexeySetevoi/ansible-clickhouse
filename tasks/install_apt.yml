@@ -24,5 +24,6 @@
   apt:
     name: "{{ item }}={{ clickhouse_version }}"
     state: present
+    force: yes
   with_items: "{{ clickhouse_package }}"
   become: true
