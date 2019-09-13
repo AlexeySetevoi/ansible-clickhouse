@@ -1,4 +1,4 @@
-- name: Check clickhouse config,data and logs
+- name: Check clickhouse config, data and logs
   file:
     dest: "{{ item }}"
     owner: clickhouse

@@ -1,0 +1,43 @@
+#Main installation actions
+#https://clickhouse.yandex/docs/en/getting_started/index.html#installation
+
+- name: Install by YUM | Ensure clickhouse repo GPG key imported
+  rpm_key:
+    state: present
+    key: "{{ clickhouse_repo_key }}"
+  become: true
+
+- name: Install by YUM | Ensure clickhouse repo installed
+  yum_repository:
+    name: clickhouse
+    file: clickhouse
+    description: "Clickhouse repo"
+    baseurl: "{{ clickhouse_repo }}"
+    enabled: yes
+    gpgcheck: 1
+    gpgkey: "{{ clickhouse_repo_key }}"
+  become: true
+
+- name: Install by YUM | Ensure clickhouse package installed (latest)
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ clickhouse_package }}"
+  become: true
+  when: clickhouse_version == "*"
+
+- name: Install by YUM | Ensure clickhouse package installed (version {{ clickhouse_version }})
+  yum:
+    name: "{{ item }}-{{ clickhouse_version }}"
+    state: present
+    disable_gpg_check: yes # Because Package clickhouse-server-base-19.4.0-2.x86_64.rpm is not signed
+  with_items: "{{ clickhouse_package }}"
+  become: true
+  when: clickhouse_version != "*"
+
+- name: Install by YUM | Ensure clickhouse enabled and started
+  systemd:
+    name: clickhouse-server
+    state: started
+    enabled: yes
+    daemon_reload: yes
