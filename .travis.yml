@@ -7,11 +7,11 @@ matrix:
     - os: linux
       dist: trusty
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+      env: ANSIBLE_VERSION='ansible>=2.6,<2.7'
     - os: linux
       dist: trusty
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.3,<2.4'
+      env: ANSIBLE_VERSION='ansible>=2.7,<2.8'
     - os: linux
       dist: trusty
       sudo: true
@@ -19,13 +19,25 @@ matrix:
     - os: linux
       dist: xenial
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.4,<2.5'
+      env: ANSIBLE_VERSION='ansible>=2.6,<2.7'
     - os: linux
       dist: xenial
       sudo: true
-      env: ANSIBLE_VERSION='ansible>=2.3,<2.4'
+      env: ANSIBLE_VERSION='ansible>=2.7,<2.8'
     - os: linux
       dist: xenial
+      sudo: true
+      env: ANSIBLE_VERSION='latest'
+    - os: linux
+      dist: bionic
+      sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.6,<2.7'
+    - os: linux
+      dist: bionic
+      sudo: true
+      env: ANSIBLE_VERSION='ansible>=2.7,<2.8'
+    - os: linux
+      dist: bionic
       sudo: true
       env: ANSIBLE_VERSION='latest'
 
