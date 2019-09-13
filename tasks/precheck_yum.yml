@@ -18,6 +18,3 @@
 
 - name: Debug yum installed
   debug: var=clickhouse_rt_is_installed
-
-- name: Debug yum versions installed
-  debug: var=clickhouse_rt_versions_tmp

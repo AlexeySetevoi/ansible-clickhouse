@@ -6,3 +6,16 @@
   fail:
     msg: "Your distribution {{ ansible_distribution }}_{{ ansible_distribution_release }} not supported by this role,sorry."
   when: clickhouse_supported|bool != True
+
+- include: precheck_apt.yml
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
+  tags: [always]
+
+- include: precheck_yum.yml
+  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package'
+  tags: [always]
+
+- set_fact:
+    clickhouse_rt_versions: "{{ clickhouse_rt_versions_tmp['results'] | map(attribute='stdout') | list }}"
+- set_fact:
+    clickhouse_is_required_version: "{{ clickhouse_version == '*' or (clickhouse_rt_versions | unique | count == 1 and clickhouse_rt_versions[0] == clickhouse_version) }}"

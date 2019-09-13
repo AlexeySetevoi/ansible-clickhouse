@@ -18,6 +18,3 @@
 
 - name: Debug apt installed
   debug: var=clickhouse_rt_is_installed
-
-- name: Debug apt versions installed
-  debug: var=clickhouse_rt_versions_tmp

@@ -1,4 +1,0 @@
-- set_fact:
-    clickhouse_rt_versions: "{{ clickhouse_rt_versions_tmp['results'] | map(attribute='stdout') | list }}"
-- set_fact:
-    clickhouse_is_required_version: "{{ clickhouse_version == '*' or (clickhouse_rt_versions | unique | count == 1 and clickhouse_rt_versions[0] == clickhouse_version) }}"
