@@ -2,7 +2,7 @@
 #https://clickhouse.yandex/docs/en/getting_started/index.html#installation
 
 - name: Uninstall by APT | Stop service
-  systemd:
+  service:
     name: clickhouse-server
     state: stopped
   become: true

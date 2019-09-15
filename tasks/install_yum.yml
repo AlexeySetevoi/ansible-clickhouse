@@ -35,9 +35,17 @@
   become: true
   when: clickhouse_version != "*"
 
-- name: Install by YUM | Ensure clickhouse enabled and started
+- name: Install by YUM | Ensure clickhouse enabled and started by Systemd
   systemd:
     name: clickhouse-server
     state: started
     enabled: yes
     daemon_reload: yes
+  when: ansible_service_mgr == 'systemd'
+
+- name: Install by YUM | Ensure clickhouse enabled and started by generic service
+  service:
+    name: clickhouse-server
+    state: started
+    enabled: yes
+  when: ansible_service_mgr != 'systemd'
