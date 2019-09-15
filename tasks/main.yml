@@ -9,12 +9,11 @@
 - include: precheck.yml
   tags: [always]
 
-- include: install_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and (clickhouse_rt_is_installed.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
-  tags: [install]
-
-- include: install_yum.yml
-  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package' and (clickhouse_rt_is_installed.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
+- include: "{{ item }}"
+  with_first_found:
+    - "install_{{ ansible_pkg_mgr }}.yml"
+    - "empty.yml"
+  when: clickhouse_setup == 'package' and (clickhouse_rt_is_installed.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
   tags: [install]
 
 - include: precheck.yml
@@ -35,10 +34,9 @@
   when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_dict]
 
-- include: remove_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == True
-  tags: [remove]
-
-- include: remove_yum.yml
-  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package' and clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == True
+- include: "{{ item }}"
+  with_first_found:
+    - "remove_{{ ansible_pkg_mgr }}.yml"
+    - "empty.yml"
+  when: clickhouse_setup == 'package' and clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == True
   tags: [remove]

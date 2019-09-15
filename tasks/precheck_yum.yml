@@ -1,7 +1,6 @@
-#See https://github.com/ansible/ansible/issues/4297, https://github.com/ansible/ansible/issues/17500
 - name: Requirements check | Check if Clickhouse is installed
   shell: rpm -qa --queryformat '%{NAME}\n'  | sort | grep clickhouse | tr '\n' ' ' |grep -q "{{ clickhouse_package| join(" ")}}"
-  register: "{{ 'clickhouse_rt_is_installed' if ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package' else 'clickhouse_rt_is_installed_yum' }}"
+  register: "{{ clickhouse_rt_is_installed_dict.yum }}"
   ignore_errors: yes
   when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package'
   changed_when: False
@@ -15,6 +14,3 @@
   changed_when: False
   check_mode: no
   with_items: "{{ clickhouse_package }}"
-
-- name: Debug yum installed
-  debug: var=clickhouse_rt_is_installed
