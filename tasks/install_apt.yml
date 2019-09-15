@@ -6,6 +6,7 @@
     keyserver: "{{ clickhouse_repo_keyserver }}"
     id: "{{ clickhouse_repo_key }}"
   become: true
+  tags: [install]
 
 - name: Install by APT | Remove old repo link of exists
   apt_repository:
@@ -13,12 +14,14 @@
     state: absent
   become: true
   when: clickhouse_repo_old is defined
+  tags: [install]
 
 - name: Install by APT | Repo installation
   apt_repository:
     repo: "{{ clickhouse_repo }}"
     state: present
   become: true
+  tags: [install]
 
 - name: Install by APT | Package installation
   apt:
@@ -27,3 +30,4 @@
     force: yes
   with_items: "{{ clickhouse_package }}"
   become: true
+  tags: [install]

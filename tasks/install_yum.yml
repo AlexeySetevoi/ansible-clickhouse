@@ -17,6 +17,7 @@
     gpgcheck: 1
     gpgkey: "{{ clickhouse_repo_key }}"
   become: true
+  tags: [install]
 
 - name: Install by YUM | Ensure clickhouse package installed (latest)
   yum:
@@ -25,6 +26,7 @@
   with_items: "{{ clickhouse_package }}"
   become: true
   when: clickhouse_version == "*"
+  tags: [install]
 
 - name: Install by YUM | Ensure clickhouse package installed (version {{ clickhouse_version }})
   yum:
@@ -34,6 +36,7 @@
   with_items: "{{ clickhouse_package }}"
   become: true
   when: clickhouse_version != "*"
+ tags: [install]
 
 - name: Install by YUM | Ensure clickhouse enabled and started by Systemd
   systemd:
@@ -42,6 +45,7 @@
     enabled: yes
     daemon_reload: yes
   when: ansible_service_mgr == 'systemd'
+  tags: [install]
 
 - name: Install by YUM | Ensure clickhouse enabled and started by generic service
   service:
@@ -49,3 +53,4 @@
     state: started
     enabled: yes
   when: ansible_service_mgr != 'systemd'
+  tags: [install]
