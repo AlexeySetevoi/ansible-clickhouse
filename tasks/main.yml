@@ -7,41 +7,36 @@
   tags: [always]
 
 - include: precheck.yml
-  tags: [precheck,install]
+  tags: [always]
 
-- name: Debug installed
-  debug: var=clickhouse_rt_isinstalled.rc
-
-- include: install_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and (clickhouse_rt_isinstalled.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
+- include: "{{ item }}"
+  with_first_found:
+    - "install_{{ ansible_pkg_mgr }}.yml"
+    - "empty.yml"
+  when: clickhouse_setup == 'package' and (clickhouse_rt_is_installed.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
   tags: [install]
-
-- include: install_yum.yml
-  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package' and (clickhouse_rt_isinstalled.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
-  tags: [install]
-
-- include: remove_apt.yml
-  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == True
-  tags: [remove]
-
-- include: remove_yum.yml
-  when: ansible_pkg_mgr == 'yum' and clickhouse_setup == 'package' and clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == True
-  tags: [remove]
 
 - include: precheck.yml
-  tags: [precheck,config,config_sys,config_db,config_dict]
+  tags: [always]
 
 - include: config_sys.yml
-  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_sys]
 
 - name: Wait DBMS ready
   command: sleep 1
 
 - include: config_db.yml
-  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_db]
 
 - include: config_dict.yml
-  when: clickhouse_rt_isinstalled.rc == 0 and clickhouse_remove|bool == False
+  when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_dict]
+
+- include: "{{ item }}"
+  with_first_found:
+    - "remove_{{ ansible_pkg_mgr }}.yml"
+    - "empty.yml"
+  when: clickhouse_setup == 'package' and clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == True
+  tags: [remove]

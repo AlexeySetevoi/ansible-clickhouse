@@ -1,0 +1,16 @@
+- name: Requirements check | Check if Clickhouse is installed
+  shell: dpkg-query -f '${Package} ' -W |grep -q "{{ clickhouse_package| join(" ")}}"
+  register: clickhouse_rt_is_installed
+  ignore_errors: yes
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
+  changed_when: False
+  check_mode: no
+
+- name: Requirements check | Check if Clickhouse is installed and has required version
+  shell: dpkg-query --showformat='${Version}' --show "{{ item }}"
+  register: clickhouse_rt_versions_tmp
+  ignore_errors: yes
+  when: ansible_pkg_mgr == 'apt' and clickhouse_setup == 'package'
+  changed_when: False
+  check_mode: no
+  with_items: "{{ clickhouse_package }}"

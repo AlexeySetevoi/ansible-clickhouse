@@ -6,7 +6,7 @@
   tags: [config_db]
 
 - name: Config | Delete database config
-  command: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }} 'DROP DATABASE IF EXISTS `{{ item.name }}`'"
+  command: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }} -q 'DROP DATABASE IF EXISTS `{{ item.name }}`'"
   with_items: "{{ clickhouse_dbs }}"
   when: item.state is defined and item.state == 'absent' and item.name in existing_databases.stdout_lines
   tags: [config_db]

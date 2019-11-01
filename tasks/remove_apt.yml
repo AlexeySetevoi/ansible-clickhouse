@@ -1,6 +1,12 @@
 #Main installation actions
 #https://clickhouse.yandex/docs/en/getting_started/index.html#installation
 
+- name: Uninstall by APT | Stop service
+  service:
+    name: clickhouse-server
+    state: stopped
+  become: true
+
 - name: Uninstall by APT | Package uninstallation
   apt:
     name: "{{ item }}"

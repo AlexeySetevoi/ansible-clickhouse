@@ -5,6 +5,7 @@
   rpm_key:
     state: present
     key: "{{ clickhouse_repo_key }}"
+  tags: [install]
   become: true
 
 - name: Install by YUM | Ensure clickhouse repo installed
@@ -16,6 +17,7 @@
     enabled: yes
     gpgcheck: 1
     gpgkey: "{{ clickhouse_repo_key }}"
+  tags: [install]
   become: true
 
 - name: Install by YUM | Ensure clickhouse package installed (latest)
@@ -24,6 +26,7 @@
     state: latest
   with_items: "{{ clickhouse_package }}"
   become: true
+  tags: [install]
   when: clickhouse_version == "*"
 
 - name: Install by YUM | Ensure clickhouse package installed (version {{ clickhouse_version }})
@@ -33,11 +36,24 @@
     disable_gpg_check: yes # Because Package clickhouse-server-base-19.4.0-2.x86_64.rpm is not signed
   with_items: "{{ clickhouse_package }}"
   become: true
+  tags: [install]
   when: clickhouse_version != "*"
 
-- name: Install by YUM | Ensure clickhouse enabled and started
+- name: Install by YUM | Ensure clickhouse enabled and started by Systemd
   systemd:
     name: clickhouse-server
     state: started
     enabled: yes
     daemon_reload: yes
+  tags: [install]
+  become: yes
+  when: ansible_service_mgr == 'systemd'
+
+- name: Install by YUM | Ensure clickhouse enabled and started by generic service
+  service:
+    name: clickhouse-server
+    state: started
+    enabled: yes
+  tags: [install]
+  become: yes
+  when: ansible_service_mgr != 'systemd'
