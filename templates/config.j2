@@ -219,6 +219,31 @@
         <asynchronous_metrics>false</asynchronous_metrics>
     </graphite>
     -->
+{% for graphite in clickhouse_graphite %}
+    <graphite>
+        <host>{{ graphite.host }}</host>
+        <port>{{ graphite.port }}</port>
+        <timeout>{{ graphite.timeout }}</timeout>
+        <interval>{{ graphite.interval }}</interval>
+        <root_path>{{ graphite.root_path }}</root_path>
+        {% if graphite.hostname_in_path is defined %}
+        <hostname_in_path>{{ graphite.hostname_in_path }}</hostname_in_path>
+        {% endif %}
+
+        {% if graphite.metrics is defined %}
+        <metrics>{{ graphite.metrics }}</metrics>
+        {% endif %}
+        {% if graphite.events is defined %}
+        <events>{{ graphite.events }}</events>
+        {% endif %}
+        {% if graphite.events_cumulative is defined %}
+        <events_cumulative>{{ graphite.events_cumulative }}</events_cumulative>
+        {% endif %}
+        {% if graphite.asynchronous_metrics is defined %}
+        <asynchronous_metrics>{{ graphite.asynchronous_metrics }}</asynchronous_metrics>
+        {% endif %}
+    </graphite>
+{% endfor %}
 
 
     <!-- Query log. Used only for queries with setting log_queries = 1. -->
