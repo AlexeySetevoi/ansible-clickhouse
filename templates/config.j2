@@ -219,6 +219,7 @@
         <asynchronous_metrics>false</asynchronous_metrics>
     </graphite>
     -->
+{% if clickhouse_graphite is defined %}
 {% for graphite in clickhouse_graphite %}
     <graphite>
         <host>{{ graphite.host }}</host>
@@ -244,6 +245,7 @@
         {% endif %}
     </graphite>
 {% endfor %}
+{% endif %}
 
 
     <!-- Query log. Used only for queries with setting log_queries = 1. -->
