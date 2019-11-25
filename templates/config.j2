@@ -382,6 +382,27 @@
         </default>
     </graphite_rollup_example>
 
+{% if clickhouse_graphite_rollup is defined %}
+    <graphite_rollup>
+    {% for tag in clickhouse_graphite_rollup %}
+        <{{ tag }}>
+        {% if clickhouse_graphite_rollup[tag].function is defined %}
+            <function>{{ clickhouse_graphite_rollup[tag].function }}</function>
+        {% endif %}
+        {% if clickhouse_graphite_rollup[tag].regexp is defined %}
+            <regexp>{{ clickhouse_graphite_rollup[tag].regexp }}</regexp>
+        {% endif %}
+        {% for retention in clickhouse_graphite_rollup[tag].retention %}
+            <retention>
+                <age>{{ retention.age }}</age>
+                <precision>{{ retention.precision }}</precision>
+            </retention>
+        {% endfor %}
+        </{{ tag }}>
+    {% endfor %}
+    </graphite_rollup>
+{% endif %}
+
     <!-- Directory in <clickhouse-path> containing schema files for various input formats.
          The directory will be created if it doesn't exist.
       -->
@@ -404,7 +425,6 @@
         <{{ item }}>{{ clickhouse_kafka_topics_config[kafka_topic][item] }}</{{ item }}>
     {% endfor %}
     </kafka_{{ kafka_topic }}>
-
 {% endfor %}
 
 </yandex>
