@@ -27,7 +27,6 @@
     dest: "{{ clickhouse_path_configdir }}/users.xml"
     owner: clickhouse
     group: clickhouse
-  notify: restart-ch
   become: true
 
 - name: Config | Create conf folder
