@@ -23,8 +23,14 @@
   when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
   tags: [config,config_sys]
 
-- name: Wait DBMS ready
-  command: sleep 1
+- name: Check clickhouse server is ready
+  command: "clickhouse-client -h 127.0.0.1 -q 'select 1'"
+  changed_when: False
+  retries: "{{ clickhouse_ready_retries }}"
+  delay: "{{ clickhouse_ready_delay }}"
+  register: clickhouse_rt_ready
+  until: clickhouse_rt_ready.rc == 0
+  tags: [config,config_sys]
 
 - include: config_db.yml
   when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
