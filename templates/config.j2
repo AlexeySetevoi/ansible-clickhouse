@@ -3,12 +3,38 @@
 <!-- {{ ansible_managed }} -->
 <yandex>
     <logger>
+    {# for some reason you can't use both ways #}
+    {% if clickhouse_logger.use_syslog is defined and clickhouse_logger.use_syslog == 1 %}
+        <use_syslog>{{ clickhouse_logger.use_syslog }}</use_syslog>
+    {% if clickhouse_logger.syslog is defined %}
+        <syslog>
+        {% for tag in clickhouse_logger.syslog %}
+            <{{ tag }}>{{ clickhouse_logger.syslog[tag] }}</{{ tag }}>
+        {% endfor %}
+        </syslog>
+    {% endif %}
+    {% else %}
         <!-- Possible levels: https://github.com/pocoproject/poco/blob/develop/Foundation/include/Poco/Logger.h#L105 -->
         <level>{{ clickhouse_logger.level }}</level>
         <log>{{ clickhouse_logger.log }}</log>
         <errorlog>{{ clickhouse_logger.errorlog }}</errorlog>
         <size>{{ clickhouse_logger.size }}</size>
+    {% if clickhouse_logger.number is defined %}
+        <number>{{ clickhouse_logger.number }}</number>
+    {% endif %}
+    {% if clickhouse_logger.compress is defined %}
+        <compress>{{ clickhouse_logger.compress }}</compress>
+    {% endif %}
+    {% if clickhouse_logger.count is defined %}
         <count>{{ clickhouse_logger.count }}</count>
+    {% endif %}
+    {% if clickhouse_logger.flush is defined %}
+        <flush>{{ clickhouse_logger.flush }}</flush>
+    {% endif %}
+    {% if clickhouse_logger.rotateOnOpen is defined %}
+        <rotateOnOpen>{{ clickhouse_logger.rotateOnOpen }}</rotateOnOpen>
+    {% endif %}
+    {% endif %}
     </logger>
 
     <http_port>{{ clickhouse_http_port }}</http_port>
