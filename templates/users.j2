@@ -62,9 +62,7 @@
     <{{ user.name }}>
         {% if user.password is defined and user.password_sha256_hex is not defined %}
         <password>{{ user.password }}</password>
-        {% elif user.password is not defined and user.password_sha256_hex is defined %}
-        <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
-        {% elif user.password is defined and user.password_sha256_hex is defined %}
+        {% elif user.password_sha256_hex is defined %}
         <password_sha256_hex>{{ user.password_sha256_hex }}</password_sha256_hex>
         {% endif %}
         <networks incl="networks" replace="replace">
