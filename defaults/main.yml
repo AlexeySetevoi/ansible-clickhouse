@@ -47,6 +47,9 @@ clickhouse_users_default:
   - { name: "default", password: "", networks: "{{ clickhouse_networks_default }}", profile: "default", quota: "default", comment: "Default user for login if user not defined" }
   - { name: "readonly", password: "", networks: "{{ clickhouse_networks_default }}", profile: "default", quota: "default", comment: "Example of user with readonly access" }
 
+clickhouse_ready_retries: 3
+clickhouse_ready_delay: 5
+
 #Full form { name:'<username>', password: '<plainpassword>', password_sha256_hex: '<sha256password>',
 #   networks:"<{} with nets>", profile:'<profile>', quota:'<quota>', dbs: '{} with dbs', comment: '<some comment>'}
 #Req: name, password or password_256_hex
