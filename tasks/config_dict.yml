@@ -3,3 +3,4 @@
    src: dicts.j2
    dest: "{{ clickhouse_path_configdir }}/auto_dictionary.xml"
   become: true
+  when: clickhouse_dicts is defined and ( clickhouse_dicts|length>0 )
