@@ -1,5 +1,5 @@
 clickhouse_supported: yes
-clickhouse_repo: "deb http://repo.yandex.ru/clickhouse/deb/stable/ main/"
+clickhouse_repo: "deb https://repo.clickhouse.tech/deb/stable/ main/"
 clickhouse_repo_old: "deb http://repo.yandex.ru/clickhouse/bionic stable main"
 clickhouse_repo_keyserver: keyserver.ubuntu.com
 clickhouse_repo_key: E0C56BD4
