@@ -101,7 +101,12 @@ clickhouse_dbs_custom:
       - { name: testu2 }
       - { name: testu3 }
       - { name: testu4, state: absent }
-      - { name: testu4, state: present }
+      - { name: testu5, state: present }
+      - { name: testu6, state: absent, cluster: testu6 }
+      - { name: testu7, state: present, cluster: testu7 }
+      - { name: testu8, state: absent, cluster: testu8, engine: Lazy(3600) }
+      - { name: testu9, state: present, cluster: testu9, engine: Lazy(3600) }
+
 ```
 
 F: You can create dictionary via odbc
