@@ -399,6 +399,36 @@
     </graphite_rollup>
 {% endif %}
 
+    <!-- Exposing metrics data for scraping from Prometheus. -->
+    <!--
+        endpoint – HTTP endpoint for scraping metrics by prometheus server. Start from ‘/’.
+        port – Port for endpoint.
+        metrics – Flag that sets to expose metrics from the system.metrics table.
+        events – Flag that sets to expose metrics from the system.events table.
+        asynchronous_metrics – Flag that sets to expose current metrics values from the system.asynchronous_metrics table.
+    -->
+    <!--
+    <prometheus>
+        <endpoint>/metrics</endpoint>
+        <port>8001</port>
+        <metrics>true</metrics>
+        <events>true</events>
+        <asynchronous_metrics>true</asynchronous_metrics>
+    </prometheus>
+    -->
+
+{% if clickhouse_prometheus is defined %}
+{% for prometheus in clickhouse_prometheus %}
+    <prometheus>
+        <endpoint>{{ prometheus.endpoint }}</endpoint>
+        <port>{{ prometheus.port }}</port>
+        <metrics>{{ prometheus.metrics }}</metrics>
+        <events>{{ prometheus.events }}</events>
+        <asynchronous_metrics>{{ prometheus.asynchronous_metrics }}</asynchronous_metrics>
+    </prometheus>
+{% endfor %}
+{% endif %}
+
     <!-- Directory in <clickhouse-path> containing schema files for various input formats.
          The directory will be created if it doesn't exist.
       -->
