@@ -76,6 +76,8 @@ clickhouse_logger:
   size: 1000M
   count: 10
 
+clickhouse_config_dictionaries_lazy_load: true
+
 clickhouse_config:
   max_connections: 2048
   keep_alive_timeout: 3
@@ -83,6 +85,7 @@ clickhouse_config:
   uncompressed_cache_size: 8589934592
   mark_cache_size: 5368709120
   builtin_dictionaries_reload_interval: 3600
+  dictionaries_lazy_load: "{{ clickhouse_config_dictionaries_lazy_load }}"
   max_session_timeout: 3600
   default_session_timeout: 60
 
