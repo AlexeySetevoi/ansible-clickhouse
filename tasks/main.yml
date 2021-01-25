@@ -24,7 +24,7 @@
   tags: [config,config_sys]
 
 - name: Check clickhouse server is ready
-  command: "clickhouse-client -h 127.0.0.1 -q 'select 1'"
+  command: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }} -q 'select 1'"
   changed_when: False
   retries: "{{ clickhouse_ready_retries }}"
   delay: "{{ clickhouse_ready_delay }}"
