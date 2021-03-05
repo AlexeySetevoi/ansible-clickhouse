@@ -46,7 +46,7 @@ clickhouse_networks_default:
 
 clickhouse_users_default:
   - { name: "default", password: "", networks: "{{ clickhouse_networks_default }}", profile: "default", quota: "default", comment: "Default user for login if user not defined" }
-  - { name: "readonly", password: "", networks: "{{ clickhouse_networks_default }}", profile: "default", quota: "default", comment: "Example of user with readonly access" }
+  - { name: "readonly", password: "", networks: "{{ clickhouse_networks_default }}", profile: "readonly", quota: "default", comment: "Example of user with readonly access" }
 
 clickhouse_ready_retries: 3
 clickhouse_ready_delay: 5
