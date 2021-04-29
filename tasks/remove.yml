@@ -1,0 +1,15 @@
+---
+
+- name: Remove clickhouse config,data and logs
+  file:
+    dest: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ clickhouse_path_logdir }}"
+    - "{{ clickhouse_path_configdir }}"
+    - "{{ clickhouse_path_tmp }}"
+    - "{{ clickhouse_path_data }}"
+  become: true
+  when: clickhouse_remove_full
+
+- include_tasks: "remove/{{ ansible_pkg_mgr }}.yml"

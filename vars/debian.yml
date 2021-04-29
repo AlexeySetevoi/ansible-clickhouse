@@ -1,0 +1,9 @@
+---
+clickhouse_supported: true
+clickhouse_repo: "deb https://repo.clickhouse.tech/deb/stable/ main/"
+clickhouse_repo_old: >-
+  deb
+  http://repo.yandex.ru/clickhouse/{{ansible_distribution_release}}
+  stable main
+clickhouse_repo_keyserver: keyserver.ubuntu.com
+clickhouse_repo_key: E0C56BD4

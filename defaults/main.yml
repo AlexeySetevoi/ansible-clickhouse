@@ -1,16 +1,18 @@
 ---
 # defaults file for clickhouse
 
-clickhouse_version: "*"
+clickhouse_version: 'latest'
+clickhouse_service_ensure: 'started'
+clickhouse_service_enable: true
 
 #Flag for using with requirements check
-clickhouse_supported: no
+clickhouse_supported: false
 #Type of installation (package,source)
-clickhouse_setup: package
+clickhouse_setup: 'package'
 #Flag for remove clickhouse from host(disabled by default)
-clickhouse_remove: no
+clickhouse_remove: false
 #Flag for full remove(incl db and config), use clickhouse_remove + clickhouse_remove_full
-clickhouse_remove_full: no
+clickhouse_remove_full: false
 
 clickhouse_profiles_default:
  default:
@@ -57,10 +59,10 @@ clickhouse_ready_delay: 5
 clickhouse_users_custom: {}
 
 clickhouse_quotas_intervals_default:
- - { duration: 3600, queries: 0, errors: 0,result_rows: 0,read_rows: 0,execution_time: 0 }
+  - { duration: 3600, queries: 0, errors: 0, result_rows: 0, read_rows: 0, execution_time: 0 }
 
 clickhouse_quotas_default:
- - { name: "default", intervals: "{{ clickhouse_quotas_intervals_default }}",comment: "Default quota - count only" }
+ - { name: "default", intervals: "{{ clickhouse_quotas_intervals_default }}", comment: "Default quota - count only" }
 
 clickhouse_quotas_custom: {}
 

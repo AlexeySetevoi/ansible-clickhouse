@@ -1,0 +1,9 @@
+---
+
+- name: "Set clickhouse_service_enable"
+  set_fact:
+    clickhouse_service_enable: "{{ false if clickhouse_remove else true }}"
+
+- name: "Set clickhouse_service_ensure"
+  set_fact:
+    clickhouse_service_ensure: "{{ 'stopped' if clickhouse_remove else 'started' }}"
