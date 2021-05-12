@@ -7,7 +7,7 @@ on:
       - 'README.md'
       - 'LICENSE'
     branches:
-      - main
+      - master
 
 
 defaults:
