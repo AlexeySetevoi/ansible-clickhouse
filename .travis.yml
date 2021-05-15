@@ -27,7 +27,7 @@ sudo: true
 addons:
   apt:
     packages:
-    - python-pip
+    - python3-pip
 
 install:
   - pip install --upgrade pip setuptools && pip install wheel && pip install -r requirements-test.txt
