@@ -1,7 +1,7 @@
 ansible-clickhouse 
 =========
 ![Build Status](https://github.com/alexeysetevoi/ansible-clickhouse/actions/workflows/ci.yml/badge.svg?branch=master)
-[![Build Status](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse.svg?branch=master)](https://travis-ci.com/alexeysetevoi/ansible-clickhouse)
+[![Build Status](https://travis-ci.org/AlexeySetevoi/ansible-clickhouse.svg?branch=master)](https://travis-ci.org/github/AlexeySetevoi/ansible-clickhouse)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/alexeysetevoi/ansible-clickhouse)](https://galaxy.ansible.com/alexeysetevoi/clickhouse)
 [![Ansible Galaxy](https://img.shields.io/badge/role-alexeysetevoi.clickhouse-blue.svg)](https://galaxy.ansible.com/alexeysetevoi/clickhouse/)
 
