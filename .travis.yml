@@ -1,6 +1,6 @@
 ---
 language: python
-python: "2.7"
+python: "3.7"
 
 services:
   - docker
@@ -22,7 +22,7 @@ addons:
     - python-pip
 
 install:
-  - python3 -m pip install --upgrade pip setuptools && pip3 install wheel && pip3 install -r requirements-test.txt
+  - pip install --upgrade pip setuptools && pip install wheel && pip install -r requirements-test.txt
 #  # Install ansible
 #  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install $ANSIBLE_VERSION; fi
 #
