@@ -11,6 +11,14 @@ matrix:
       dist: xenial
       sudo: true
       env: MOLECULE_SCENARIO_NAME='ubuntu_xenial'
+    - os: linux
+      dist: focal
+      sudo: true
+      env: MOLECULE_SCENARIO_NAME='ubuntu_focal'
+    - os: linux
+      dist: bionic
+      sudo: true
+      env: MOLECULE_SCENARIO_NAME='ubuntu_bionic'
 
 # Use the new container infrastructure
 sudo: true
@@ -23,49 +31,9 @@ addons:
 
 install:
   - pip install --upgrade pip setuptools && pip install wheel && pip install -r requirements-test.txt
-#  # Install ansible
-#  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install $ANSIBLE_VERSION; fi
-#
-#  # Check ansible version
-#  - ansible --version
-#
-#  # Create ansible.cfg with correct roles_path
-#  - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
   - molecule test -s ${MOLECULE_SCENARIO_NAME}
-#  # Basic role syntax check
-#  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-#  # Full install check
-#  - ansible-playbook tests/test.yml -i tests/inventory -v
-#  - sudo cat /var/log/clickhouse-server/clickhouse-server.err.log
-#  # Clickhouse client checking
-#  - clickhouse-client -q 'select 1'
-#  - clickhouse-client -q 'select 1' -d default
-#  - clickhouse-client -q 'select 1' -d testu1
-#  - clickhouse-client -q 'select 1' -d testu2 -u testuser2 --password testplpassword
-#  - clickhouse-client -q 'select 1' -d testu3
-#  # Remove check
-#  - ansible-playbook tests/test.yml -i tests/inventory -e "clickhouse_remove=yes clickhouse_remove_full=yes" -v
-#  # Partial install check
-#  - ansible-playbook tests/test.yml -i tests/inventory -t install -v
-#  - ansible-playbook tests/test.yml -i tests/inventory -t config_sys -v
-#  - ansible-playbook tests/test.yml -i tests/inventory -t config_db -v
-#  - ansible-playbook tests/test.yml -i tests/inventory -t config -v
-#  - sudo cat /var/log/clickhouse-server/clickhouse-server.err.log
-#  # Http port checking
-#  - curl 'http://127.0.0.1:8123'
-#  - echo 'SELECT 1' | curl 'http://testuser2:testplpassword@localhost:8123?database=testu2' -d @-
-#  # Clickhouse client checking
-#  - clickhouse-client -q 'select 1'
-#  - clickhouse-client -q 'select 1' -d default
-#  - clickhouse-client -q 'select 1' -d testu1
-#  - clickhouse-client -q 'select 1' -d testu2 -u testuser2 --password testplpassword
-#  - clickhouse-client -q 'select 1' -d testu3
-#  #Full remove check
-#  - ansible-playbook tests/test.yml -i tests/inventory -e "clickhouse_remove=yes clickhouse_remove_full=yes" -v
-
-
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
