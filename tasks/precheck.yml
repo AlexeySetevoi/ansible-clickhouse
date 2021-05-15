@@ -5,19 +5,4 @@
 - name: Requirements check | Not supported distribution && release
   fail:
     msg: "Your distribution {{ ansible_distribution }}_{{ ansible_distribution_release }} not supported by this role,sorry."
-  when: clickhouse_supported|bool != True
-
-- include: "{{ item }}"
-  with_first_found:
-    - "precheck_{{ ansible_pkg_mgr }}.yml"
-    - "empty.yml"
-  when: clickhouse_setup == 'package'
-  tags: [always]
-
-- name: Debug apt installed
-  debug: var=clickhouse_rt_is_installed
-
-- set_fact:
-    clickhouse_rt_versions: "{{ clickhouse_rt_versions_tmp['results'] | map(attribute='stdout') | list }}"
-- set_fact:
-    clickhouse_is_required_version: "{{ clickhouse_version == '*' or (clickhouse_rt_versions | unique | count == 1 and clickhouse_rt_versions[0] == clickhouse_version) }}"
+  when: not clickhouse_supported|bool

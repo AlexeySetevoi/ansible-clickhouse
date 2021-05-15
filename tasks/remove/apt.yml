@@ -1,0 +1,23 @@
+---
+#Main installation actions
+#https://clickhouse.yandex/docs/en/getting_started/index.html#installation
+
+- name: Uninstall by APT | Package uninstallation
+  apt:
+    name: "{{ clickhouse_package }}"
+    state: absent
+    purge: yes
+  become: true
+
+- name: Uninstall by APT | Repo uninstallation
+  apt_repository:
+    repo: "{{ clickhouse_repo }}"
+    state: absent
+  become: true
+
+- name: Uninstall by APT | Apt-key remove repo key
+  apt_key:
+    keyserver: "{{ clickhouse_repo_keyserver }}"
+    id: "{{ clickhouse_repo_key }}"
+    state: absent
+  become: true

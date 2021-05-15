@@ -1,0 +1,114 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    clickhouse_packages:
+      - 'clickhouse-client'
+      - 'clickhouse-server'
+      - 'clickhouse-common-static'
+    clickhouse_service: 'clickhouse-server.service'
+    clickhouse_user: 'clickhouse'
+    clickhouse_group: 'clickhouse'
+    clickhouse_tcp_port: 9000
+    clickhouse_path_base: '/var/lib'
+    clickhouse_config_path: '/etc/clickhouse-server'
+    clickhouse_paths:
+      - '/var/log/clickhouse-server'
+      - "{{ clickhouse_config_path }}"
+      - "{{ clickhouse_path_base }}/clickhouse/"
+      - "{{ clickhouse_path_base }}/clickhouse/tmp/"
+      - "{{ clickhouse_config_path}}/conf.d"
+    clickhouse_config_files: 
+      - "{{ clickhouse_config_path }}/config.xml"
+      - "{{ clickhouse_config_path }}/users.xml"
+
+  tasks:
+    - name: 'Gather Installed Packages'
+      ansible.builtin.package_facts:
+        manager: auto
+      become: true
+
+    - name: 'Assert Clickhouse Packages'
+      ansible.builtin.assert:
+        that:
+          - "'{{ item }}' in ansible_facts.packages"
+      loop: "{{ clickhouse_packages }}"
+
+    - name: 'Gather Local Users'
+      ansible.builtin.getent:
+        database: passwd
+      become: true
+
+    - name: 'Assert Clickhouse User'
+      ansible.builtin.assert:
+        that:
+          - "'{{ clickhouse_user }}' in getent_passwd"
+
+    - name: 'Gather Local Groups'
+      ansible.builtin.getent:
+        database: group
+      become: true
+
+    - name: 'Assert Clickhouse User Group'
+      ansible.builtin.assert:
+        that:
+          - "'{{ clickhouse_group }}' in getent_group"
+
+    - name: 'Gather Clickhouse Paths Stats'
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ clickhouse_paths }}"
+      become: true
+      register: ch_paths
+
+    - name: 'Assert Clickhouse Paths Stats'
+      ansible.builtin.assert:
+        that:
+          - "'{{ clickhouse_user }}' == '{{ item.stat.pw_name }}'"
+          - "'{{ clickhouse_group }}' == '{{ item.stat.gr_name }}'"
+          - "'inode/directory' == '{{ item.stat.mimetype }}'"
+          - "'0770' == '{{ item.stat.mode }}'"
+          - "{{ item.stat.exists }}"
+      loop: "{{ ch_paths.results }}"
+
+    - name: 'Gather Clickhouse Config Files Stats'
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop: "{{ clickhouse_config_files }}"
+      become: true
+      register: ch_config_files
+
+    - name: 'Assert Clickhouse Config Files Stats'
+      ansible.builtin.assert:
+        that:
+          - "'{{ clickhouse_user }}' == '{{ item.stat.pw_name }}'"
+          - "'{{ clickhouse_group }}' == '{{ item.stat.gr_name }}'"
+          - "'text/xml' == '{{ item.stat.mimetype }}'"
+          - "'0660' == '{{ item.stat.mode }}'"
+          - "{{ item.stat.exists }}"
+      loop: "{{ ch_config_files.results }}"
+
+    - name: 'Gather Local Services'
+      ansible.builtin.service_facts:
+      become: true
+
+    - name: 'Assert Clickhouse Service'
+      ansible.builtin.assert:
+        that:
+          - "'{{ clickhouse_service }}' in ansible_facts.services"
+          - "'running' == ansible_facts.services[clickhouse_service].state"
+          - "'enabled' == ansible_facts.services[clickhouse_service].status"
+
+    - name: 'Gather list of existing databases'
+      ansible.builtin.command: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }} -q 'show databases'"
+      changed_when: false
+      register: databases
+
+    - name: 'Assert Test Databases'
+      ansible.builtin.assert:
+        that:
+          - "'testu1' in databases.stdout"
+          - "'testu2' in databases.stdout"
+          - "'testu3' in databases.stdout"
+          - "'testu4' not in databases.stdout"

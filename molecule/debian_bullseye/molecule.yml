@@ -1,0 +1,47 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+  options:
+    D: true
+    vv: true
+lint: |
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: debian_bullseye
+    image: debian:bullseye
+    dockerfile: ../resources/Dockerfile.j2
+    # pre_build_image: true
+    command: /sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    env:
+      ANSIBLE_USER: ansible
+      SUDO_GROUP: sudo
+      DEPLOY_GROUP: deployer
+      container: docker
+provisioner:
+  name: ansible
+  options:
+    vv: true
+    D: true
+  inventory:
+    links:
+      hosts: ../resources/inventory/hosts.yml
+      group_vars: ../resources/inventory/group_vars/
+      host_vars: ../resources/inventory/host_vars/
+  playbooks:
+    converge: ../resources/playbooks/converge.yml
+verifier:
+  name: ansible
+  playbooks:
+    verify: ../resources/tests/verify.yml

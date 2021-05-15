@@ -1,20 +1,25 @@
 galaxy_info:
+  role_name: clickhouse
+  namespace: alexeysetevoi
   author: Alexey V. Bobrov
   description: Role for installation and managing Yandex.ClickHouse
 
   license: MIT
   
-  min_ansible_version: 2.0
+  min_ansible_version: 2.8
 
   platforms:
     - name: Ubuntu
       versions:
+        - focal
+        - bionic
         - xenial
-        - trusty
     - name: Debian
       versions:
-        - jessie
+        - bullseye
+        - buster
         - stretch
+        - jessie
     - name: EL
       versions:
         - 7
@@ -26,4 +31,3 @@ galaxy_info:
     - sql
 
 dependencies: []
-

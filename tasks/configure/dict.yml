@@ -1,0 +1,10 @@
+---
+- name: Config | Generate dictionary config
+  template:
+    src: dicts.j2
+    dest: "{{ clickhouse_path_configdir }}/auto_dictionary.xml"
+    owner: "{{ clickhouse_user | default('clickhouse') }}"
+    group: "{{ clickhouse_group | default('clickhouse') }}"
+    mode: "ug=rw,o-rwx"
+  become: true
+  when: clickhouse_dicts|length>0 

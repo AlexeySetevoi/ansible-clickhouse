@@ -1,48 +1,70 @@
 ---
 # tasks file for clickhouse
-- include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution | lower }}_{{ ansible_distribution_release | lower }}.yml"
-    - "empty.yml"
+- name: 'Include OS Family Specific Variables'
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_os_family | lower }}.yml"
+        - 'empty.yml'
+      paths:
+        - 'vars'
   tags: [always]
 
-- include: precheck.yml
+- include_tasks: precheck.yml
   tags: [always]
 
-- include: "{{ item }}"
-  with_first_found:
-    - "install_{{ ansible_pkg_mgr }}.yml"
-    - "empty.yml"
-  when: clickhouse_setup == 'package' and (clickhouse_rt_is_installed.rc !=0 or not clickhouse_is_required_version) and clickhouse_remove|bool == False
+- include_tasks: params.yml
+  tags: [always]
+
+- include_tasks:
+    file: "{{ lookup('first_found', params) }}"
+    apply:
+      tags: [install]
+  vars:
+    params:
+      files:
+        - "install/{{ ansible_pkg_mgr }}.yml"
+        - 'empty.yml'
   tags: [install]
+  when: not clickhouse_remove|bool
 
-- include: precheck.yml
+- include_tasks: 
+    file: configure/sys.yml
+    apply:
+      tags: [config, config_sys]
+  tags: [config, config_sys]
+  when: not clickhouse_remove|bool
+
+- name: "Notify Handlers Now"
+  meta: flush_handlers
+
+- include_tasks: service.yml
   tags: [always]
 
-- include: config_sys.yml
-  when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
-  tags: [config,config_sys]
+- name: "Wait for Clickhouse Server to Become Ready"
+  wait_for:
+    port: "{{ clickhouse_tcp_port }}"
+    delay: "{{ clickhouse_ready_delay }}"
+  when: not clickhouse_remove|bool
 
-- name: Check clickhouse server is ready
-  command: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }} -q 'select 1'"
-  changed_when: False
-  retries: "{{ clickhouse_ready_retries }}"
-  delay: "{{ clickhouse_ready_delay }}"
-  register: clickhouse_rt_ready
-  until: clickhouse_rt_ready.rc == 0
-  tags: [config,config_sys]
+- include_tasks:
+    file: configure/db.yml
+    apply:
+      tags: [config, config_db]
+  tags: [config, config_db]
+  when: not clickhouse_remove|bool
 
-- include: config_db.yml
-  when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
-  tags: [config,config_db]
+- include_tasks:
+    file: configure/dict.yml
+    apply:
+      tags: [config, config_dict]
+  tags: [config, config_dict]
+  when: not clickhouse_remove|bool
 
-- include: config_dict.yml
-  when: clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == False
-  tags: [config,config_dict]
-
-- include: "{{ item }}"
-  with_first_found:
-    - "remove_{{ ansible_pkg_mgr }}.yml"
-    - "empty.yml"
-  when: clickhouse_setup == 'package' and clickhouse_rt_is_installed.rc == 0 and clickhouse_remove|bool == True
+- include_tasks:
+    file: remove.yml
+    apply:
+      tags: [remove]
   tags: [remove]
+  when: clickhouse_remove|bool

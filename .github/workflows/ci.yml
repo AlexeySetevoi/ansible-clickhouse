@@ -1,0 +1,48 @@
+---
+name: "Lint, and Functional Testing"
+on:
+  pull_request:
+  push:
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+    branches:
+      - master
+
+
+defaults:
+  run:
+    working-directory: 'ansible-clickhouse'
+
+jobs:
+  molecule:
+    name: "Molecule Testing"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        scenario:
+          - centos_7
+          - centos_8
+          - debian_bullseye
+          - debian_buster
+          - debian_jessie
+          - debian_stretch
+          - ubuntu_bionic
+          - ubuntu_focal
+          - ubuntu_xenial
+    steps:
+      - name: "Clone Repo"
+        uses: actions/checkout@v2
+        with:
+          path: 'ansible-clickhouse'
+      - name: "Setup Python 3"
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: "Install Testing Tools"
+        run: pip3 install --upgrade pip setuptools && pip3 install wheel && pip3 install -r requirements-test.txt
+      - name: "Run Tests"
+        run: molecule test -s ${{ matrix.scenario }}
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'

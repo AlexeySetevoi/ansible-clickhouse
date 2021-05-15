@@ -1,0 +1,62 @@
+---
+ansible_user: ansible
+clickhouse_supported: false
+
+clickhouse_listen_host_default:
+  - "127.0.0.1"
+clickhouse_users_custom:
+  - { name: "testuser",
+      password_sha256_hex: "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
+      networks: "{{ clickhouse_networks_default }}",
+      profile: "default",
+      quota: "default",
+      dbs: {testu1},
+      comment: "classic user with plain password"}
+  - { name: "testuser2",
+      password: "testplpassword",
+      networks: "{{ clickhouse_networks_default }}",
+      profile: "default",
+      quota: "default",
+      dbs: {testu2},
+      comment: "classic user with hex password"}
+  - { name: "testuser3",
+      password: "testplpassword",
+      networks: { 192.168.0.0/24, 10.0.0.0/8 },
+      profile: "default",
+      quota: "default",
+      dbs: {testu1, testu2, testu3},
+      comment: "classic user with multi dbs and multi-custom network allow password"}
+clickhouse_dbs_custom:
+  - { name: testu1 }
+  - { name: testu2 }
+  - { name: testu3 }
+  - { name: testu4, state: absent }
+clickhouse_dicts:
+  test1:
+    name: test_dict
+    odbc_source:
+      connection_string: "DSN=testdb"
+      source_table: "dict_source"
+    lifetime:
+      min: 300
+      max: 360
+    layout: hashed
+    structure:
+      key: "testIntKey"
+      attributes:
+        - { name: testAttrName, type: UInt32, null_value: 0 }
+  test2:
+    name: test_dict
+    odbc_source:
+      connection_string: "DSN=testdb"
+      source_table: "dict_source"
+    lifetime:
+      min: 300
+      max: 360
+    layout: complex_key_hashed
+    structure:
+      key:
+        attributes:
+          - { name: testAttrComplexName, type: String }
+      attributes:
+        - { name: testAttrName, type: String, null_value: "" }
