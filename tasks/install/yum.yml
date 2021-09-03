@@ -33,7 +33,7 @@
   yum:
     name: "{{ clickhouse_package | map('regex_replace', '$', '-' + clickhouse_version) | list }}"
     state: present
-    disable_gpg_check: "{{ true if clickhouse_version == 19.4.0 else omit }}" 
+    disable_gpg_check: "{{ true if clickhouse_version == '19.4.0' else omit }}" 
   become: true
   tags: [install]
   when: clickhouse_version != 'latest'
