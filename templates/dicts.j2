@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 {{ ansible_managed | comment('xml') }}
-<dictionaries>
+<yandex>
 {% for dict in clickhouse_dicts %}
  <dictionary>
    <name>{{ clickhouse_dicts[dict].name }}</name>
@@ -42,4 +42,4 @@
    </structure>
  </dictionary>
 {% endfor %}
-</dictionaries>
+</yandex>
