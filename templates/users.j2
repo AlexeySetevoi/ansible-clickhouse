@@ -89,23 +89,28 @@
     {% for quota in clickhouse_quotas_default %}
     <{{ quota.name }}>
     {% for interval in quota.intervals %}
+    <interval>
         <duration>{{ interval.duration }}</duration>
         <queries>{{ interval.queries }}</queries>
         <errors>{{ interval.errors }}</errors>
         <result_rows>{{ interval.result_rows }}</result_rows>
         <read_rows>{{ interval.read_rows }}</read_rows>
         <execution_time>{{ interval.execution_time }}</execution_time>
+    </interval>
     {% endfor %}
     </{{ quota.name }}>
     {% endfor %}
     {% for quota in clickhouse_quotas_custom %}
+    <{{ quota.name }}>
     {% for interval in quota.intervals %}
+    <interval>
         <duration>{{ interval.duration }}</duration>
         <queries>{{ interval.queries }}</queries>
         <errors>{{ interval.errors }}</errors>
         <result_rows>{{ interval.result_rows }}</result_rows>
         <read_rows>{{ interval.read_rows }}</read_rows>
         <execution_time>{{ interval.execution_time }}</execution_time>
+    </interval>
     {% endfor %}
     </{{ quota.name }}>
     {% endfor %}
