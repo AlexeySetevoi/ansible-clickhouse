@@ -245,10 +245,10 @@ Including an example of how to use your role (for instance, with variables passe
        shard_2:
           - { host: "db_host_3", port: 9000 }
           - { host: "db_host_4", port: 9000 }        
-      clickhouse_zookeeper_nodes:
-        - { host: "zoo_host_1", port: 2181 }
-        - { host: "zoo_host_2", port: 2181 }
-        - { host: "zoo_host_3", port: 2181 }
+    clickhouse_zookeeper_nodes:
+      - { host: "zoo_host_1", port: 2181 }
+      - { host: "zoo_host_2", port: 2181 }
+      - { host: "zoo_host_3", port: 2181 }
     roles:
       - ansible-clickhouse
 ```
