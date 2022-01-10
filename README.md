@@ -21,10 +21,15 @@ clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
 clickhouse_interserver_http: 9009
 ```
-F: you can manage listen ip:
+F: You can add listen ips on top of defaults:
 ```yaml
 clickhouse_listen_host_custom:
   - "192.168.0.1"
+```
+F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
+```yaml
+clickhouse_listen_host:
+  - "::"
 ```
 F: You can create custom profiles
 ```yaml
