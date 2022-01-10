@@ -18,10 +18,11 @@
       - "{{ clickhouse_config_path }}"
       - "{{ clickhouse_path_base }}/clickhouse/"
       - "{{ clickhouse_path_base }}/clickhouse/tmp/"
-      - "{{ clickhouse_config_path}}/conf.d"
+      - "{{ clickhouse_config_path}}/config.d"
+      - "{{ clickhouse_config_path}}/users.d"
     clickhouse_config_files: 
-      - "{{ clickhouse_config_path }}/config.xml"
-      - "{{ clickhouse_config_path }}/users.xml"
+      - "{{ clickhouse_config_path }}/config.d/config.xml"
+      - "{{ clickhouse_config_path }}/users.d/users.xml"
 
   tasks:
     - name: 'Gather Installed Packages'
