@@ -90,6 +90,13 @@ clickhouse_users_custom:
           quota: "default",
           dbs: [ testu1,testu2,testu3 ] ,
           comment: "classic user with multi dbs and multi-custom network allow password"}
+      - { name: "testuser4",
+          ldap_server: "example_ldap_server",
+          networks: { 192.168.0.0/24, 10.0.0.0/8 },
+          profile: "default",
+          quota: "default",
+          dbs: [ testu1,testu2,testu3 ] ,
+          comment: "external authentication using ldap_server definition"}
 ```
 
 F: You can manage own quotas:
