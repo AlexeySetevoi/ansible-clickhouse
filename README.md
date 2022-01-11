@@ -172,6 +172,19 @@ clickhouse_kafka_topics_config:
     fetch_min_bytes: 120000
 ```
 
+F: You can manage [LDAP Server configuration](https://clickhouse.com/docs/en/operations/external-authenticators/ldap/#ldap-server-definition)
+```yaml
+clickhouse_ldap_servers:
+  # Debug with ldapwhoami -H '<host>' -D '<bind_dn>' -w <password>
+  example_ldap_server:
+    host: "ldaps.example.com"
+    port: "636"
+    bind_dn: "EXAMPLENET\\{user_name}"
+    verification_cooldown: "300"
+    enable_tls: "yes"
+    tls_require_cert: "demand"
+```
+
 F: You can manage Merge Tree config. For the list of available parameters, see [MergeTreeSettings.h](https://github.com/yandex/ClickHouse/blob/master/dbms/src/Storages/MergeTree/MergeTreeSettings.h).
 ```yaml
 clickhouse_merge_tree_config:
