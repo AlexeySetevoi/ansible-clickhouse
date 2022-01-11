@@ -192,6 +192,21 @@ clickhouse_ldap_servers:
     tls_require_cert: "demand"
 ```
 
+F: You can manage [LDAP External User Directory](https://clickhouse.com/docs/en/operations/external-authenticators/ldap/#ldap-external-user-directory)
+```yaml
+# Helpful guide on https://altinity.com/blog/integrating-clickhouse-with-ldap-part-two
+clickhouse_ldap_user_directories:
+  - server: "example_ldap_server"
+    roles:
+      - "ldap_user"
+    role_mapping:
+      base_dn: "ou=groups,dc=example,dc=com"
+      attribute: "CN"
+      scope: "subtree"
+      search_filter: "(&amp;(objectClass=group)(member={user_dn}))"
+      prefix: "clickhouse_
+```
+
 F: You can manage Merge Tree config. For the list of available parameters, see [MergeTreeSettings.h](https://github.com/yandex/ClickHouse/blob/master/dbms/src/Storages/MergeTree/MergeTreeSettings.h).
 ```yaml
 clickhouse_merge_tree_config:

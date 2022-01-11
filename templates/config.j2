@@ -475,4 +475,26 @@
     </ldap_servers>
 {% endif %}
 
+{% if clickhouse_ldap_user_directories is defined %}
+    <user_directories>
+    {% for ldap_user_directory in clickhouse_ldap_user_directories %}
+        <ldap>
+            <server>{{ ldap_user_directory['server'] }}</server>
+            <roles>
+            {% for role in ldap_user_directory['roles'] %}
+                <{{ role }}/>
+            {% endfor %}
+            </roles>
+            {% if ldap_user_directory['role_mapping'] is defined %}
+            <role_mapping>
+            {% for key, value in ldap_user_directory['role_mapping'].items() %}
+                <{{ key }}>{{ value }}</{{ key }}>
+            {% endfor %}
+            </role_mapping>
+            {% endif %}
+        </ldap>
+    {% endfor %}
+    </user_directories>
+{% endif %}
+
 </yandex>
