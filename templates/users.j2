@@ -79,6 +79,9 @@
         {% endfor %}
         </allow_databases>
         {% endif %}
+        {% if user.ldap_server is defined %}
+        <ldap><server>{{  user.ldap_server  }}</server></ldap>
+        {% endif %}
     </{{ user.name }}>
     {% endfor %}
     </users>

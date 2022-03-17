@@ -21,17 +21,25 @@ clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
 clickhouse_interserver_http: 9009
 ```
-F: you can manage listen ip:
+F: You can add listen ips on top of defaults:
 ```yaml
 clickhouse_listen_host_custom:
   - "192.168.0.1"
 ```
+<<<<<<< HEAD
 
 F: you can manage ttl query_log:
 ```yaml
 clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
 ```
 
+=======
+F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
+```yaml
+clickhouse_listen_host:
+  - "::"
+```
+>>>>>>> 7cb5558ba9f17238a4f33d2ba3b0f5e7c6ed7003
 F: You can create custom profiles
 ```yaml
 clickhouse_profiles_custom:
@@ -91,6 +99,13 @@ clickhouse_users_custom:
           quota: "default",
           dbs: [ testu1,testu2,testu3 ] ,
           comment: "classic user with multi dbs and multi-custom network allow password"}
+      - { name: "testuser4",
+          ldap_server: "example_ldap_server",
+          networks: { 192.168.0.0/24, 10.0.0.0/8 },
+          profile: "default",
+          quota: "default",
+          dbs: [ testu1,testu2,testu3 ] ,
+          comment: "external authentication using ldap_server definition"}
 ```
 
 F: You can manage own quotas:
@@ -171,6 +186,34 @@ clickhouse_kafka_topics_config:
   topic2:
     retry_backoff_ms: 300
     fetch_min_bytes: 120000
+```
+
+F: You can manage [LDAP Server configuration](https://clickhouse.com/docs/en/operations/external-authenticators/ldap/#ldap-server-definition)
+```yaml
+clickhouse_ldap_servers:
+  # Debug with ldapwhoami -H '<host>' -D '<bind_dn>' -w <password>
+  example_ldap_server:
+    host: "ldaps.example.com"
+    port: "636"
+    bind_dn: "EXAMPLENET\\{user_name}"
+    verification_cooldown: "300"
+    enable_tls: "yes"
+    tls_require_cert: "demand"
+```
+
+F: You can manage [LDAP External User Directory](https://clickhouse.com/docs/en/operations/external-authenticators/ldap/#ldap-external-user-directory)
+```yaml
+# Helpful guide on https://altinity.com/blog/integrating-clickhouse-with-ldap-part-two
+clickhouse_ldap_user_directories:
+  - server: "example_ldap_server"
+    roles:
+      - "ldap_user"
+    role_mapping:
+      base_dn: "ou=groups,dc=example,dc=com"
+      attribute: "CN"
+      scope: "subtree"
+      search_filter: "(&amp;(objectClass=group)(member={user_dn}))"
+      prefix: "clickhouse_
 ```
 
 F: You can manage Merge Tree config. For the list of available parameters, see [MergeTreeSettings.h](https://github.com/yandex/ClickHouse/blob/master/dbms/src/Storages/MergeTree/MergeTreeSettings.h).

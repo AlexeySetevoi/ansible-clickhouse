@@ -14,10 +14,28 @@
   notify: restart-ch
   become: true
 
+- name: Config | Create config.d folder
+  file:
+    path: "{{ clickhouse_path_configdir }}/config.d"
+    state: directory
+    owner: "{{ clickhouse_user | default('clickhouse') }}"
+    group: "{{ clickhouse_group | default('clickhouse') }}"
+    mode: "ug=rwx,o-rwx"
+  become: true
+
+- name: Config | Create users.d folder
+  file:
+    path: "{{ clickhouse_path_configdir }}/users.d"
+    state: directory
+    owner: "{{ clickhouse_user | default('clickhouse') }}"
+    group: "{{ clickhouse_group | default('clickhouse') }}"
+    mode: "ug=rwx,o-rwx"
+  become: true
+
 - name: Config | Generate system config
   template:
     src: config.j2
-    dest: "{{ clickhouse_path_configdir }}/config.xml"
+    dest: "{{ clickhouse_path_configdir }}/config.d/config.xml"
     owner: "{{ clickhouse_user | default('clickhouse') }}"
     group: "{{ clickhouse_group | default('clickhouse') }}"
     mode: "ug=rw,o-rwx"
@@ -27,25 +45,18 @@
 - name: Config | Generate users config
   template:
     src: users.j2
-    dest: "{{ clickhouse_path_configdir }}/users.xml"
+    dest: "{{ clickhouse_path_configdir }}/users.d/users.xml"
     owner: "{{ clickhouse_user | default('clickhouse') }}"
     group: "{{ clickhouse_group | default('clickhouse') }}"
     mode: "ug=rw,o-rwx"
   become: true
 
-- name: Config | Create conf folder
-  file:
-    path: "{{ clickhouse_path_configdir }}/conf.d"
-    state: directory
-    owner: "{{ clickhouse_user | default('clickhouse') }}"
-    group: "{{ clickhouse_group | default('clickhouse') }}"
-    mode: "ug=rwx,o-rwx"
-  become: true
+
 
 - name: Config | Generate remote_servers config
   template:
     src: remote_servers.j2
-    dest: "{{ clickhouse_path_configdir }}/conf.d/clickhouse_remote_servers.xml"
+    dest: "{{ clickhouse_path_configdir }}/config.d/clickhouse_remote_servers.xml"
     owner: "{{ clickhouse_user | default('clickhouse') }}"
     group: "{{ clickhouse_group | default('clickhouse') }}"
     mode: "ug=rw,o-rwx"
@@ -56,7 +67,7 @@
 - name: Config | Generate macros config
   template:
     src: macros.j2
-    dest: "{{ clickhouse_path_configdir }}/conf.d/macros.xml"
+    dest: "{{ clickhouse_path_configdir }}/config.d/macros.xml"
     owner: "{{ clickhouse_user | default('clickhouse') }}"
     group: "{{ clickhouse_group | default('clickhouse') }}"
     mode: "ug=rw,o-rwx"
@@ -67,7 +78,7 @@
 - name: Config | Generate zookeeper servers config
   template:
     src: zookeeper-servers.j2
-    dest: "{{ clickhouse_path_configdir }}/conf.d/zookeeper-servers.xml"
+    dest: "{{ clickhouse_path_configdir }}/config.d/zookeeper-servers.xml"
     owner: "{{ clickhouse_user | default('clickhouse') }}"
     group: "{{ clickhouse_group | default('clickhouse') }}"
     mode: "u=rw,og=r"
