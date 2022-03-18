@@ -26,20 +26,18 @@ F: You can add listen ips on top of defaults:
 clickhouse_listen_host_custom:
   - "192.168.0.1"
 ```
-<<<<<<< HEAD
 
 F: you can manage ttl query_log:
 ```yaml
 clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
 ```
 
-=======
 F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
 ```yaml
 clickhouse_listen_host:
   - "::"
 ```
->>>>>>> 7cb5558ba9f17238a4f33d2ba3b0f5e7c6ed7003
+
 F: You can create custom profiles
 ```yaml
 clickhouse_profiles_custom:
@@ -253,7 +251,7 @@ Including an example of how to use your role (for instance, with variables passe
               quota: "default",
               dbs: [ testu1,testu2,testu3 ] ,
               comment: "classic user with multi dbs and multi-custom network allow password"}
-      clickhouse_query_log_ttl: 'event_date + INTERVAL 30  DELETE'
+      clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
       clickhouse_dicts:
           test1:
             name: test_dict
