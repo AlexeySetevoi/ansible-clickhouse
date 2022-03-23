@@ -170,7 +170,7 @@ F: Flag for remove clickhouse from host(disabled by default)
 clickhouse_remove: no
 ```
 
-F: You can manage [Kafka configuration](https://clickhouse.yandex/docs/en/operations/table_engines/kafka/#configuration)
+F: You can manage [Kafka configuration](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/#configuration)
 ```yaml
 # global configuration
 clickhouse_kafka_config:
@@ -214,7 +214,7 @@ clickhouse_ldap_user_directories:
       prefix: "clickhouse_
 ```
 
-F: You can manage Merge Tree config. For the list of available parameters, see [MergeTreeSettings.h](https://github.com/yandex/ClickHouse/blob/master/dbms/src/Storages/MergeTree/MergeTreeSettings.h).
+F: You can manage Merge Tree config. For the list of available parameters, see [MergeTree tables settings](https://clickhouse.com/docs/en/operations/settings/merge-tree-settings/).
 ```yaml
 clickhouse_merge_tree_config:
   max_suspicious_broken_parts: 5
@@ -326,7 +326,7 @@ BSD
 Author Information
 ------------------
 
-[ClickHouse](https://clickhouse.yandex/docs/en/index.html) by [Yandex LLC](https://yandex.ru/company/).
+[ClickHouse](https://clickhouse.com/docs/en/index.html) by [ClickHouse, Inc.](https://clickhouse.com/company/).
 
 Role by [AlexeySetevoi](https://github.com/AlexeySetevoi).
 
