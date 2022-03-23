@@ -1,6 +1,6 @@
 ---
 #Main installation actions
-#https://clickhouse.yandex/docs/en/getting_started/index.html#installation
+#https://clickhouse.com/docs/en/getting-started/#installation
 
 - name: Install by APT | Apt-key add repo key
   apt_key:
