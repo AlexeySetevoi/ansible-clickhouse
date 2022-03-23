@@ -82,6 +82,9 @@
         {% if user.ldap_server is defined %}
         <ldap><server>{{  user.ldap_server  }}</server></ldap>
         {% endif %}
+        {% if user.access_management is defined %}
+        <access_management>{{ user.access_management }}</access_management>
+        {% endif %}
     </{{ user.name }}>
     {% endfor %}
     </users>
