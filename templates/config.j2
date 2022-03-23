@@ -264,6 +264,9 @@
                 toStartOfHour(event_time)
         -->
         <partition_by>toYYYYMM(event_date)</partition_by>
+        {% if clickhouse_query_log_ttl is defined %}
+        <ttl>{{ clickhouse_query_log_ttl }}</ttl>
+        {% endif %}
         <!-- Interval of flushing data. -->
         <flush_interval_milliseconds>7500</flush_interval_milliseconds>
     </query_log>

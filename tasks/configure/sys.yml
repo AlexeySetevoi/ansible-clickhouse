@@ -62,7 +62,7 @@
     mode: "ug=rw,o-rwx"
   notify: restart-ch
   become: true
-  when: clickhouse_shards is defined
+  when: clickhouse_clusters is defined
 
 - name: Config | Generate macros config
   template:

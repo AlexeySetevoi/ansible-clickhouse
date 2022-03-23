@@ -2,9 +2,10 @@
 {{ ansible_managed | comment('xml') }}
 <yandex>
   <remote_servers>
-{% for shard_name, replicas in clickhouse_shards.items() | list %}
-    <{{ shard_name }}>
-      <shard>
+{% for clusters_name, shards_name in clickhouse_clusters.items() | list %}
+    <{{ clusters_name }}>
+{% for shard_name, replicas  in shards_name.items() %}
+        <shard>
         <internal_replication>true</internal_replication>
 {% for replica in replicas %}
         <replica>
@@ -13,7 +14,8 @@
         </replica>
 {% endfor %}
       </shard>
-    </{{ shard_name }}>
+{% endfor %}      
+    </{{ clusters_name }}>
 {% endfor %}
   </remote_servers>
 </yandex>

@@ -26,11 +26,18 @@ F: You can add listen ips on top of defaults:
 clickhouse_listen_host_custom:
   - "192.168.0.1"
 ```
+
+F: you can manage ttl query_log:
+```yaml
+clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
+```
+
 F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
 ```yaml
 clickhouse_listen_host:
   - "::"
 ```
+
 F: You can create custom profiles
 ```yaml
 clickhouse_profiles_custom:
@@ -244,6 +251,7 @@ Including an example of how to use your role (for instance, with variables passe
               quota: "default",
               dbs: [ testu1,testu2,testu3 ] ,
               comment: "classic user with multi dbs and multi-custom network allow password"}
+      clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
       clickhouse_dicts:
           test1:
             name: test_dict
@@ -277,15 +285,18 @@ Including an example of how to use your role (for instance, with variables passe
          - { name: testu1 }
          - { name: testu2, state:present }
          - { name: testu3, state:absent }
-      clickhouse_shards:
-        your_shard_name:
+    clickhouse_clusters:
+      your_cluster_name:
+       shard_1:
           - { host: "db_host_1", port: 9000 }
           - { host: "db_host_2", port: 9000 }
+       shard_2:
           - { host: "db_host_3", port: 9000 }
-      clickhouse_zookeeper_nodes:
-        - { host: "zoo_host_1", port: 2181 }
-        - { host: "zoo_host_2", port: 2181 }
-        - { host: "zoo_host_3", port: 2181 }
+          - { host: "db_host_4", port: 9000 }        
+    clickhouse_zookeeper_nodes:
+      - { host: "zoo_host_1", port: 2181 }
+      - { host: "zoo_host_2", port: 2181 }
+      - { host: "zoo_host_3", port: 2181 }
     roles:
       - ansible-clickhouse
 ```
