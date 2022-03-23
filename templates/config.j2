@@ -500,4 +500,16 @@
     </user_directories>
 {% endif %}
 
+{% if clickhouse_s3_endpoints is defined %}
+  <s3>
+  {% for s3_endpoint in clickhouse_s3_endpoints %}
+    <{{ s3_endpoint }}>
+    {% for key, value in clickhouse_s3_endpoints[s3_endpoint].items() %}
+      <{{ key }}>{{ value }}</{{ key }}>
+    {% endfor %}
+    </{{ s3_endpoint }}>
+  {% endfor %}
+  </s3>
+{% endif %}
+
 </yandex>
