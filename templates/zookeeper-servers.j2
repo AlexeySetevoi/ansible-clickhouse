@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 {{ ansible_managed | comment('xml') }} 
-<yandex>
+<clickhouse>
   <zookeeper>
 {% for server in clickhouse_zookeeper_nodes %}
     <node index="{{loop.index}}">
@@ -10,4 +10,4 @@
     </node>
 {% endfor %}
   </zookeeper>
-</yandex>
+</clickhouse>
