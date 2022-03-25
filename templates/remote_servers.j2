@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 {{ ansible_managed | comment('xml') }}
-<yandex>
+<clickhouse>
   <remote_servers>
 {% for clusters_name, shards_name in clickhouse_clusters.items() | list %}
     <{{ clusters_name }}>
@@ -18,4 +18,4 @@
     </{{ clusters_name }}>
 {% endfor %}
   </remote_servers>
-</yandex>
+</clickhouse>
