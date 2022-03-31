@@ -11,14 +11,17 @@
         <count>{{ clickhouse_logger.count }}</count>
     </logger>
 
-    <http_port>{{ clickhouse_http_port }}</http_port>
-    <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
-
-    <!-- For HTTPS and SSL over native protocol. -->
-    <!--
+{% if clickhouse_https_port is defined %}
     <https_port>{{ clickhouse_https_port }}</https_port>
+{% else %}
+    <http_port>{{ clickhouse_http_port }}</http_port>
+{% endif %}
+
+{% if clickhouse_tcp_secure_port is defined %}
     <tcp_port_secure>{{ clickhouse_tcp_secure_port }}</tcp_port_secure>
-    -->
+{% else %}
+    <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
+{% endif %}
 
     <!-- Used with https_port and tcp_port_secure. Full ssl options list: https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h#L71 -->
     <openSSL>
