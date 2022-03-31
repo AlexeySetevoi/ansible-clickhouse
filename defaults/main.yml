@@ -65,6 +65,10 @@ clickhouse_interserver_http: 9009
 
 # clickhouse_distributed_secret: "secretstring"
 
+# clickhouse_zookeeper_identity:
+#   user: "zoo-user"
+#   password: "secretstring"
+
 clickhouse_networks_default:
   - "::1"
   - "127.0.0.1"
