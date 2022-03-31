@@ -57,7 +57,19 @@
     -->
 
     <!-- Port for communication between replicas. Used for data exchange. -->
+{% if clickhouse_interserver_https is defined %}
+    <interserver_https_port>{{ clickhouse_interserver_https }}</interserver_https_port>
+{% else %}
     <interserver_http_port>{{ clickhouse_interserver_http }}</interserver_http_port>
+{% endif %}
+
+{% if clickhouse_interserver_http_credentials is defined %}
+<interserver_http_credentials>
+    <user>{{ clickhouse_interserver_http_credentials.user }}</user>
+    <password>{{ clickhouse_interserver_http_credentials.password }}</password>
+</interserver_http_credentials>
+{% endif %}
+
 
     <!-- Hostname that is used by other replicas to request this server.
          If not specified, than it is determined analoguous to 'hostname -f' command.

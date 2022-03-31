@@ -57,6 +57,13 @@ clickhouse_ssl_client:
   invalid_certificate_handler_name: "RejectCertificateHandler"
 
 clickhouse_interserver_http: 9009
+# clickhouse_interserver_https: 9010
+
+# clickhouse_interserver_http_credentials:
+#   user: "internal"
+#   password: "secretstring"
+
+# clickhouse_distributed_secret: "secretstring"
 
 clickhouse_networks_default:
   - "::1"
