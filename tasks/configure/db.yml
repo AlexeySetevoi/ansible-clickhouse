@@ -1,13 +1,16 @@
 ---
+- name: Set ClickHose Connection String
+  set_fact: clickhouse_connection_string="clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_secure_port | default(clickhouse_tcp_port) }}{{' --secure' if clickhouse_tcp_secure_port is defined else '' }}"
+
 - name: Gather list of existing databases
-  command: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }} -q 'show databases'"
+  command: "{{ clickhouse_connection_string }} -q 'show databases'"
   changed_when: False
   register: existing_databases
   tags: [config_db]
 
 - name: Config | Delete database config
   command: |
-    clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }}
+    {{ clickhouse_connection_string }}
     -q 'DROP DATABASE IF EXISTS `{{ item.name }}`
     {% if item.cluster is defined %}ON CLUSTER `{{ item.cluster }}`{% endif %}'
   with_items: "{{ clickhouse_dbs }}"
@@ -16,7 +19,7 @@
 
 - name: Config | Create database config
   command: |
-    clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_port }}
+    {{ clickhouse_connection_string }}
     -q 'CREATE DATABASE IF NOT EXISTS `{{ item.name }}`
     {% if item.cluster is defined %}ON CLUSTER `{{ item.cluster }}`{% endif %}
     {% if item.engine is defined %}ENGINE = {{ item.engine }}{% endif %}'
