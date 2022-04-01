@@ -226,79 +226,79 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 ```yaml
-  - hosts: clickhouse_cluster
-    remote_user: root
-    vars:
-      clickhouse_users_custom:
-          - { name: "testuser",
-              password_sha256_hex: "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
-              networks: "{{ clickhouse_networks_default }}",
-              profile: "default",
-              quota: "default",
-              dbs: [ testu1 ] ,
-              comment: "classic user with plain password"}
-          - { name: "testuser2",
-              password: "testplpassword",
-              networks: "{{ clickhouse_networks_default }}",
-              profile: "default",
-              quota: "default",
-              dbs: [ testu2 ] ,
-              comment: "classic user with hex password"}
-          - { name: "testuser3",
-              password: "testplpassword",
-              networks: { 192.168.0.0/24, 10.0.0.0/8 },
-              profile: "default",
-              quota: "default",
-              dbs: [ testu1,testu2,testu3 ] ,
-              comment: "classic user with multi dbs and multi-custom network allow password"}
-      clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
-      clickhouse_dicts:
-          test1:
-            name: test_dict
-            odbc_source:
-              connection_string: "DSN=testdb"
-              source_table: "dict_source"
-            lifetime:
-              min: 300
-              max: 360
-            layout: hashed
-            structure:
-              key: "testIntKey"
+- hosts: clickhouse_cluster
+  remote_user: root
+  vars:
+    clickhouse_users_custom:
+        - { name: "testuser",
+            password_sha256_hex: "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
+            networks: "{{ clickhouse_networks_default }}",
+            profile: "default",
+            quota: "default",
+            dbs: [ testu1 ] ,
+            comment: "classic user with plain password"}
+        - { name: "testuser2",
+            password: "testplpassword",
+            networks: "{{ clickhouse_networks_default }}",
+            profile: "default",
+            quota: "default",
+            dbs: [ testu2 ] ,
+            comment: "classic user with hex password"}
+        - { name: "testuser3",
+            password: "testplpassword",
+            networks: { 192.168.0.0/24, 10.0.0.0/8 },
+            profile: "default",
+            quota: "default",
+            dbs: [ testu1,testu2,testu3 ] ,
+            comment: "classic user with multi dbs and multi-custom network allow password"}
+    clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
+    clickhouse_dicts:
+        test1:
+          name: test_dict
+          odbc_source:
+            connection_string: "DSN=testdb"
+            source_table: "dict_source"
+          lifetime:
+            min: 300
+            max: 360
+          layout: hashed
+          structure:
+            key: "testIntKey"
+            attributes:
+              - { name: testAttrName, type: UInt32, null_value: 0 }
+        test2:
+          name: test_dict
+          odbc_source:
+            connection_string: "DSN=testdb"
+            source_table: "dict_source"
+          lifetime:
+            min: 300
+            max: 360
+          layout: complex_key_hashed
+          structure:
+            key:
               attributes:
-                - { name: testAttrName, type: UInt32, null_value: 0 }
-          test2:
-            name: test_dict
-            odbc_source:
-              connection_string: "DSN=testdb"
-              source_table: "dict_source"
-            lifetime:
-              min: 300
-              max: 360
-            layout: complex_key_hashed
-            structure:
-              key:
-                attributes:
-                  - { name: testAttrComplexName, type: String }
-              attributes:
-                - { name: testAttrName, type: String, null_value: "" }
-      clickhouse_dbs_custom:
-         - { name: testu1 }
-         - { name: testu2, state:present }
-         - { name: testu3, state:absent }
+                - { name: testAttrComplexName, type: String }
+            attributes:
+              - { name: testAttrName, type: String, null_value: "" }
+    clickhouse_dbs_custom:
+        - { name: testu1 }
+        - { name: testu2, state:present }
+        - { name: testu3, state:absent }
     clickhouse_clusters:
       your_cluster_name:
-       shard_1:
+      shard_1:
           - { host: "db_host_1", port: 9000 }
           - { host: "db_host_2", port: 9000 }
-       shard_2:
+      shard_2:
           - { host: "db_host_3", port: 9000 }
           - { host: "db_host_4", port: 9000 }        
     clickhouse_zookeeper_nodes:
       - { host: "zoo_host_1", port: 2181 }
       - { host: "zoo_host_2", port: 2181 }
       - { host: "zoo_host_3", port: 2181 }
-    roles:
-      - ansible-clickhouse
+  roles:
+    - alexeysetevoi.clickhouse
 ```
 To generate macros: in file host_vars\db_host_1.yml
 ```yaml
