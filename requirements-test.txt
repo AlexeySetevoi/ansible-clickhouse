@@ -35,7 +35,7 @@ molecule-docker==0.2.4
 msgpack==1.0.2
 nodeenv==1.6.0
 packaging==20.9
-paramiko==2.7.2
+paramiko==2.10.1
 pathspec==0.8.1
 pluggy==0.13.1
 poyo==0.5.0
