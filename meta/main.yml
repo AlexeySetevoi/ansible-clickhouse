@@ -2,7 +2,7 @@ galaxy_info:
   role_name: clickhouse
   namespace: alexeysetevoi
   author: Alexey V. Bobrov
-  description: Role for installation and managing Yandex.ClickHouse
+  description: Role for installation and managing ClickHouse
 
   license: MIT
   
