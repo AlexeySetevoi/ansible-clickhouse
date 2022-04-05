@@ -68,3 +68,10 @@
       tags: [remove]
   tags: [remove]
   when: clickhouse_remove|bool
+
+  - name: Check clickhouse cluster status
+    shell: >
+      for node in `echo "select distinct host_address from system.clusters where host_name !='localhost'" | curl 'http://localhost:8123/' --silent --data-binary @-`; do curl "http://$node:8123/" --silent ; done | sort -u
+    register: check_connection_to_node_cluster
+  - name: Check connection to node cluster
+    debug: msg={{ check_connection_to_node_cluster.stdout }}
