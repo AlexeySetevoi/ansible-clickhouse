@@ -41,3 +41,13 @@
   become: true
   when: clickhouse_version == 'latest'
   tags: [install]
+
+- name: Hold specified version during APT upgrade | Package installation
+  become: true
+  copy:
+    dest: "/etc/apt/preferences.d/fixed-{{ item }}"
+    content: |
+      Package: {{ item }}
+      Pin: release a=now
+      Pin-Priority: 1001
+  loop: "{{ clickhouse_package }}"
