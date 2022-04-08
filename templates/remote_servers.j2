@@ -4,14 +4,20 @@
   <remote_servers>
 {% for clusters_name, shards_name in clickhouse_clusters.items() | list %}
     <{{ clusters_name }}>
+{% if clickhouse_distributed_secret is defined %}
+        <secret>{{ clickhouse_distributed_secret }}</secret>
+{% endif %}
 {% for shard_name, replicas  in shards_name.items() %}
         <shard>
-        <internal_replication>true</internal_replication>
+          <internal_replication>true</internal_replication>
 {% for replica in replicas %}
-        <replica>
-          <host>{{ replica['host'] }}</host>
-          <port>{{ replica['port'] | default(9000) }}</port>
-        </replica>
+          <replica>
+            <host>{{ replica['host'] }}</host>
+            <port>{{ replica['port'] | default(9000) }}</port>
+{% if 'secure' in replica %}
+            <secure>1</secure>
+{% endif %}
+          </replica>
 {% endfor %}
       </shard>
 {% endfor %}      

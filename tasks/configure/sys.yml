@@ -51,8 +51,6 @@
     mode: "ug=rw,o-rwx"
   become: true
 
-
-
 - name: Config | Generate remote_servers config
   template:
     src: remote_servers.j2
@@ -84,4 +82,12 @@
     mode: "u=rw,og=r"
   notify: restart-ch
   become: true
-  when: clickhouse_zookeeper_nodes is defined 
+  when: clickhouse_zookeeper_nodes is defined
+
+- name: Config | Fix interserver_http_port and intersever_https_port collision
+  lineinfile:
+    path: "{{ clickhouse_path_configdir }}/config.xml"
+    search_string: '<interserver_http_port>'
+    state: absent
+  become: true
+  when: clickhouse_interserver_https is defined

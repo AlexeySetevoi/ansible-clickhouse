@@ -34,13 +34,40 @@ clickhouse_listen_host_custom: []
 clickhouse_listen_host: "{{ clickhouse_listen_host_default + clickhouse_listen_host_custom }}"
 
 clickhouse_http_port: 8123
-
 clickhouse_tcp_port: 9000
 
-clickhouse_https_port: 8443
-clickhouse_tcp_secure_port: 9440
+# clickhouse_https_port: 8443
+# clickhouse_tcp_secure_port: 9440
+
+clickhouse_ssl_server:
+  certificate_file: "/etc/clickhouse-server/server.crt"
+  private_key_file: "/etc/clickhouse-server/server.key"
+  dh_params_file: "/etc/clickhouse-server/dhparam.pem"
+  verification_mode: "none"
+  load_default_ca_file: "true"
+  cache_sessions: "true"
+  disable_protocols: "sslv2,sslv3"
+  prefer_server_ciphers: "true"
+
+clickhouse_ssl_client:
+  load_default_ca_file: "true"
+  cache_sessions: "true"
+  disable_protocols: "sslv2,sslv3"
+  prefer_server_ciphers: "true"
+  invalid_certificate_handler_name: "RejectCertificateHandler"
 
 clickhouse_interserver_http: 9009
+# clickhouse_interserver_https: 9010
+
+# clickhouse_interserver_http_credentials:
+#   user: "internal"
+#   password: "secretstring"
+
+# clickhouse_distributed_secret: "secretstring"
+
+# clickhouse_zookeeper_identity:
+#   user: "zoo-user"
+#   password: "secretstring"
 
 clickhouse_networks_default:
   - "::1"

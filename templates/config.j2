@@ -11,39 +11,42 @@
         <count>{{ clickhouse_logger.count }}</count>
     </logger>
 
-    <http_port>{{ clickhouse_http_port }}</http_port>
-    <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
-
-    <!-- For HTTPS and SSL over native protocol. -->
-    <!--
+{% if clickhouse_https_port is defined %}
     <https_port>{{ clickhouse_https_port }}</https_port>
+{% else %}
+    <http_port>{{ clickhouse_http_port }}</http_port>
+{% endif %}
+
+{% if clickhouse_tcp_secure_port is defined %}
     <tcp_port_secure>{{ clickhouse_tcp_secure_port }}</tcp_port_secure>
-    -->
+{% else %}
+    <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
+{% endif %}
 
     <!-- Used with https_port and tcp_port_secure. Full ssl options list: https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h#L71 -->
     <openSSL>
         <server> <!-- Used for https server AND secure tcp port -->
             <!-- openssl req -subj "/CN=localhost" -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /etc/clickhouse-server/server.key -out /etc/clickhouse-server/server.crt -->
-            <certificateFile>/etc/clickhouse-server/server.crt</certificateFile>
-            <privateKeyFile>/etc/clickhouse-server/server.key</privateKeyFile>
+            <certificateFile>{{ clickhouse_ssl_server.certificate_file }}</certificateFile>
+            <privateKeyFile>{{ clickhouse_ssl_server.private_key_file }}</privateKeyFile>
             <!-- openssl dhparam -out /etc/clickhouse-server/dhparam.pem 4096 -->
-            <dhParamsFile>/etc/clickhouse-server/dhparam.pem</dhParamsFile>
-            <verificationMode>none</verificationMode>
-            <loadDefaultCAFile>true</loadDefaultCAFile>
-            <cacheSessions>true</cacheSessions>
-            <disableProtocols>sslv2,sslv3</disableProtocols>
-            <preferServerCiphers>true</preferServerCiphers>
+            <dhParamsFile>{{ clickhouse_ssl_server.dh_params_file }}</dhParamsFile>
+            <verificationMode>{{ clickhouse_ssl_server.verification_mode }}</verificationMode>
+            <loadDefaultCAFile>{{ clickhouse_ssl_server.load_default_ca_file }}</loadDefaultCAFile>
+            <cacheSessions>{{ clickhouse_ssl_server.cache_sessions }}</cacheSessions>
+            <disableProtocols>{{ clickhouse_ssl_server.disable_protocols }}</disableProtocols>
+            <preferServerCiphers>{{ clickhouse_ssl_server.prefer_server_ciphers }}</preferServerCiphers>
         </server>
 
         <client> <!-- Used for connecting to https dictionary source -->
-            <loadDefaultCAFile>true</loadDefaultCAFile>
-            <cacheSessions>true</cacheSessions>
-            <disableProtocols>sslv2,sslv3</disableProtocols>
-            <preferServerCiphers>true</preferServerCiphers>
+            <loadDefaultCAFile>{{ clickhouse_ssl_client.load_default_ca_file }}</loadDefaultCAFile>
+            <cacheSessions>{{ clickhouse_ssl_client.cache_sessions }}</cacheSessions>
+            <disableProtocols>{{ clickhouse_ssl_client.disable_protocols }}</disableProtocols>
+            <preferServerCiphers>{{ clickhouse_ssl_client.prefer_server_ciphers }}</preferServerCiphers>
             <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
             <invalidCertificateHandler>
                 <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
-                <name>RejectCertificateHandler</name>
+                <name>{{ clickhouse_ssl_client.invalid_certificate_handler_name }}</name>
             </invalidCertificateHandler>
         </client>
     </openSSL>
@@ -54,7 +57,19 @@
     -->
 
     <!-- Port for communication between replicas. Used for data exchange. -->
+{% if clickhouse_interserver_https is defined %}
+    <interserver_https_port>{{ clickhouse_interserver_https }}</interserver_https_port>
+{% else %}
     <interserver_http_port>{{ clickhouse_interserver_http }}</interserver_http_port>
+{% endif %}
+
+{% if clickhouse_interserver_http_credentials is defined %}
+<interserver_http_credentials>
+    <user>{{ clickhouse_interserver_http_credentials.user }}</user>
+    <password>{{ clickhouse_interserver_http_credentials.password }}</password>
+</interserver_http_credentials>
+{% endif %}
+
 
     <!-- Hostname that is used by other replicas to request this server.
          If not specified, than it is determined analoguous to 'hostname -f' command.

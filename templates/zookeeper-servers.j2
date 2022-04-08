@@ -2,6 +2,9 @@
 {{ ansible_managed | comment('xml') }} 
 <clickhouse>
   <zookeeper>
+{% if clickhouse_zookeeper_identity is defined %}
+    <identity>{{ clickhouse_zookeeper_identity.user }}:{{clickhouse_zookeeper_identity.password }}</identity>
+{% endif %}
 {% for server in clickhouse_zookeeper_nodes %}
     <node index="{{loop.index}}">
 {% for key, value in server.items() %}
