@@ -29,7 +29,7 @@ clickhouse_listen_host_custom:
 
 F: you can manage ttl query_log:
 ```yaml
-clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
+clickhouse_query_log_ttl: 'event_date + INTERVAL 7 DAY DELETE'
 ```
 
 F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
