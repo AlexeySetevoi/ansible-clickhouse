@@ -15,9 +15,3 @@
     file: clickhouse
     state: absent
   become: true
-
-- name: Uninstall by YUM | Ensure clickhouse key uninstalled
-  rpm_key:
-    key: "{{ clickhouse_repo_key }}"
-    state: absent
-  become: true
