@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 {{ ansible_managed | comment('xml') }} 
-<yandex>
+<clickhouse>
   <zookeeper>
+{% if clickhouse_zookeeper_identity is defined %}
+    <identity>{{ clickhouse_zookeeper_identity.user }}:{{clickhouse_zookeeper_identity.password }}</identity>
+{% endif %}
 {% for server in clickhouse_zookeeper_nodes %}
     <node index="{{loop.index}}">
 {% for key, value in server.items() %}
@@ -10,4 +13,4 @@
     </node>
 {% endfor %}
   </zookeeper>
-</yandex>
+</clickhouse>

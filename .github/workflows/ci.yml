@@ -21,10 +21,8 @@ jobs:
     strategy:
       matrix:
         scenario:
-          - centos_7
           - debian_bullseye
           - debian_buster
-          - debian_jessie
           - debian_stretch
           - ubuntu_bionic
           - ubuntu_focal

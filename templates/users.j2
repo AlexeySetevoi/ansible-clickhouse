@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 {{ ansible_managed | comment('xml') }} 
-<yandex>
+<clickhouse>
    <profiles>
     <!-- Profiles of settings. -->
     <!-- Default profiles. -->
@@ -82,6 +82,9 @@
         {% if user.ldap_server is defined %}
         <ldap><server>{{  user.ldap_server  }}</server></ldap>
         {% endif %}
+        {% if user.access_management is defined %}
+        <access_management>{{ user.access_management }}</access_management>
+        {% endif %}
     </{{ user.name }}>
     {% endfor %}
     </users>
@@ -118,4 +121,4 @@
     </{{ quota.name }}>
     {% endfor %}
     </quotas>
-</yandex>
+</clickhouse>

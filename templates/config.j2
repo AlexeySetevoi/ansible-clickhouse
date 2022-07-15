@@ -1,7 +1,7 @@
 #jinja2: trim_blocks: True, lstrip_blocks: True
 <?xml version="1.0"?>
 {{ ansible_managed | comment('xml') }} 
-<yandex>
+<clickhouse>
     <logger>
         <!-- Possible levels: https://github.com/pocoproject/poco/blob/develop/Foundation/include/Poco/Logger.h#L105 -->
         <level>{{ clickhouse_logger.level }}</level>
@@ -11,39 +11,42 @@
         <count>{{ clickhouse_logger.count }}</count>
     </logger>
 
-    <http_port>{{ clickhouse_http_port }}</http_port>
-    <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
-
-    <!-- For HTTPS and SSL over native protocol. -->
-    <!--
+{% if clickhouse_https_port is defined %}
     <https_port>{{ clickhouse_https_port }}</https_port>
+{% else %}
+    <http_port>{{ clickhouse_http_port }}</http_port>
+{% endif %}
+
+{% if clickhouse_tcp_secure_port is defined %}
     <tcp_port_secure>{{ clickhouse_tcp_secure_port }}</tcp_port_secure>
-    -->
+{% else %}
+    <tcp_port>{{ clickhouse_tcp_port }}</tcp_port>
+{% endif %}
 
     <!-- Used with https_port and tcp_port_secure. Full ssl options list: https://github.com/ClickHouse-Extras/poco/blob/master/NetSSL_OpenSSL/include/Poco/Net/SSLManager.h#L71 -->
     <openSSL>
         <server> <!-- Used for https server AND secure tcp port -->
             <!-- openssl req -subj "/CN=localhost" -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /etc/clickhouse-server/server.key -out /etc/clickhouse-server/server.crt -->
-            <certificateFile>/etc/clickhouse-server/server.crt</certificateFile>
-            <privateKeyFile>/etc/clickhouse-server/server.key</privateKeyFile>
+            <certificateFile>{{ clickhouse_ssl_server.certificate_file }}</certificateFile>
+            <privateKeyFile>{{ clickhouse_ssl_server.private_key_file }}</privateKeyFile>
             <!-- openssl dhparam -out /etc/clickhouse-server/dhparam.pem 4096 -->
-            <dhParamsFile>/etc/clickhouse-server/dhparam.pem</dhParamsFile>
-            <verificationMode>none</verificationMode>
-            <loadDefaultCAFile>true</loadDefaultCAFile>
-            <cacheSessions>true</cacheSessions>
-            <disableProtocols>sslv2,sslv3</disableProtocols>
-            <preferServerCiphers>true</preferServerCiphers>
+            <dhParamsFile>{{ clickhouse_ssl_server.dh_params_file }}</dhParamsFile>
+            <verificationMode>{{ clickhouse_ssl_server.verification_mode }}</verificationMode>
+            <loadDefaultCAFile>{{ clickhouse_ssl_server.load_default_ca_file }}</loadDefaultCAFile>
+            <cacheSessions>{{ clickhouse_ssl_server.cache_sessions }}</cacheSessions>
+            <disableProtocols>{{ clickhouse_ssl_server.disable_protocols }}</disableProtocols>
+            <preferServerCiphers>{{ clickhouse_ssl_server.prefer_server_ciphers }}</preferServerCiphers>
         </server>
 
         <client> <!-- Used for connecting to https dictionary source -->
-            <loadDefaultCAFile>true</loadDefaultCAFile>
-            <cacheSessions>true</cacheSessions>
-            <disableProtocols>sslv2,sslv3</disableProtocols>
-            <preferServerCiphers>true</preferServerCiphers>
+            <loadDefaultCAFile>{{ clickhouse_ssl_client.load_default_ca_file }}</loadDefaultCAFile>
+            <cacheSessions>{{ clickhouse_ssl_client.cache_sessions }}</cacheSessions>
+            <disableProtocols>{{ clickhouse_ssl_client.disable_protocols }}</disableProtocols>
+            <preferServerCiphers>{{ clickhouse_ssl_client.prefer_server_ciphers }}</preferServerCiphers>
             <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
             <invalidCertificateHandler>
                 <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
-                <name>RejectCertificateHandler</name>
+                <name>{{ clickhouse_ssl_client.invalid_certificate_handler_name }}</name>
             </invalidCertificateHandler>
         </client>
     </openSSL>
@@ -54,14 +57,26 @@
     -->
 
     <!-- Port for communication between replicas. Used for data exchange. -->
+{% if clickhouse_interserver_https is defined %}
+    <interserver_https_port>{{ clickhouse_interserver_https }}</interserver_https_port>
+{% else %}
     <interserver_http_port>{{ clickhouse_interserver_http }}</interserver_http_port>
+{% endif %}
+
+{% if clickhouse_interserver_http_credentials is defined %}
+<interserver_http_credentials>
+    <user>{{ clickhouse_interserver_http_credentials.user }}</user>
+    <password>{{ clickhouse_interserver_http_credentials.password }}</password>
+</interserver_http_credentials>
+{% endif %}
+
 
     <!-- Hostname that is used by other replicas to request this server.
          If not specified, than it is determined analoguous to 'hostname -f' command.
          This setting could be used to switch replication to another network interface.
       -->
     <!--
-    <interserver_http_host>example.yandex.ru</interserver_http_host>
+    <interserver_http_host>example.clickhouse.com</interserver_http_host>
     -->
 {% if clickhouse_interserver_http_host is defined %}
     <interserver_http_host>{{ clickhouse_interserver_http_host }}</interserver_http_host>
@@ -146,27 +161,26 @@
     <mlock_executable>{{ clickhouse_mlock_status }}</mlock_executable>
 
     <!-- Configuration of clusters that could be used in Distributed tables.
-         https://clickhouse.yandex/docs/en/table_engines/distributed/
+         https://clickhouse.com/docs/en/engines/table-engines/special/distributed/
       -->
     <remote_servers incl="clickhouse_remote_servers" />
 
 
     <!-- If element has 'incl' attribute, then for it's value will be used corresponding substitution from another file.
          By default, path to file with substitutions is /etc/metrika.xml. It could be changed in config in 'include_from' element.
-         Values for substitutions are specified in /yandex/name_of_substitution elements in that file.
+         Values for substitutions are specified in /clickhouse/name_of_substitution elements in that file.
       -->
 
     <!-- ZooKeeper is used to store metadata about replicas, when using Replicated tables.
          Optional. If you don't use replicated tables, you could omit that.
 
-         See https://clickhouse.yandex/docs/en/table_engines/replication/
+         See https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replication/
       -->
     <zookeeper incl="zookeeper-servers" optional="true" />
 
     <!-- Substitutions for parameters of replicated tables.
           Optional. If you don't use replicated tables, you could omit that.
-
-         See https://clickhouse.yandex/docs/en/table_engines/replication/#creating-replicated-tables
+         See https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replication/#creating-replicated-tables
       -->
     <macros incl="macros" optional="true" />
 
@@ -175,7 +189,7 @@
     <builtin_dictionaries_reload_interval>{{ clickhouse_config.builtin_dictionaries_reload_interval }}</builtin_dictionaries_reload_interval>
 
     <!-- If true, dictionaries are created lazily on first use. Otherwise they are initialised on server startup. Default: true -->
-    <!-- See also: https://clickhouse.tech/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-dictionaries_lazy_load -->
+    <!-- See also: https://clickhouse.com/docs/en/operations/server-configuration-parameters/settings/#server_configuration_parameters-dictionaries_lazy_load -->
     <dictionaries_lazy_load>{{ clickhouse_config.dictionaries_lazy_load }}</dictionaries_lazy_load>
 
     <!-- Maximum session timeout, in seconds. Default: 3600. -->
@@ -256,7 +270,7 @@
         <database>system</database>
         <table>query_log</table>
         <!--
-            PARTITION BY expr https://clickhouse.yandex/docs/en/table_engines/custom_partitioning_key/
+            PARTITION BY expr https://clickhouse.com/docs/en/table_engines/mergetree-family/custom_partitioning_key/
             Example:
                 event_date
                 toMonday(event_date)
@@ -291,7 +305,7 @@
 
 
     <!-- Parameters for embedded dictionaries, used in Yandex.Metrica.
-         See https://clickhouse.yandex/docs/en/dicts/internal_dicts/
+         See https://clickhouse.com/docs/en/dicts/internal_dicts/
     -->
 
     <!-- Path to file with region hierarchy. -->
@@ -302,7 +316,7 @@
 
 
     <!-- Configuration of external dictionaries. See:
-         https://clickhouse.yandex/docs/en/dicts/external_dicts/
+         https://clickhouse.com/docs/en/sql-reference/dictionaries/external-dictionaries/external-dicts
     -->
     <dictionaries_config>*_dictionary.xml</dictionaries_config>
 
@@ -500,4 +514,16 @@
     </user_directories>
 {% endif %}
 
-</yandex>
+{% if clickhouse_s3_endpoints is defined %}
+  <s3>
+  {% for s3_endpoint in clickhouse_s3_endpoints %}
+    <{{ s3_endpoint }}>
+    {% for key, value in clickhouse_s3_endpoints[s3_endpoint].items() %}
+      <{{ key }}>{{ value }}</{{ key }}>
+    {% endfor %}
+    </{{ s3_endpoint }}>
+  {% endfor %}
+  </s3>
+{% endif %}
+
+</clickhouse>

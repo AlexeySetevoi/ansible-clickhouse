@@ -1,6 +1,6 @@
 ---
 #Main installation actions
-#https://clickhouse.yandex/docs/en/getting_started/index.html#installation
+#https://clickhouse.com/docs/en/getting-started/#installation
 
 - name: Uninstall by YUM | Ensure clickhouse package uninstalled
   yum:
@@ -13,11 +13,5 @@
   yum_repository:
     name: clickhouse
     file: clickhouse
-    state: absent
-  become: true
-
-- name: Uninstall by YUM | Ensure clickhouse key uninstalled
-  rpm_key:
-    key: "{{ clickhouse_repo_key }}"
     state: absent
   become: true

@@ -16,7 +16,7 @@ click-completion==0.5.2
 click-help-colors==0.9
 colorama==0.4.4
 commonmark==0.9.1
-cookiecutter==1.7.2
+cookiecutter==2.1.1
 cryptography==3.4.7
 distlib==0.3.1
 docker==5.0.0
@@ -35,7 +35,7 @@ molecule-docker==0.2.4
 msgpack==1.0.2
 nodeenv==1.6.0
 packaging==20.9
-paramiko==2.7.2
+paramiko==2.10.1
 pathspec==0.8.1
 pluggy==0.13.1
 poyo==0.5.0

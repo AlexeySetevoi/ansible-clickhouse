@@ -44,7 +44,7 @@
 
 - name: "Wait for Clickhouse Server to Become Ready"
   wait_for:
-    port: "{{ clickhouse_tcp_port }}"
+    port: "{{ clickhouse_tcp_secure_port | default(clickhouse_tcp_port) }}"
     delay: "{{ clickhouse_ready_delay }}"
   when: not clickhouse_remove|bool
 

@@ -29,7 +29,7 @@ clickhouse_listen_host_custom:
 
 F: you can manage ttl query_log:
 ```yaml
-clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
+clickhouse_query_log_ttl: 'event_date + INTERVAL 7 DAY DELETE'
 ```
 
 F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
@@ -170,7 +170,7 @@ F: Flag for remove clickhouse from host(disabled by default)
 clickhouse_remove: no
 ```
 
-F: You can manage [Kafka configuration](https://clickhouse.yandex/docs/en/operations/table_engines/kafka/#configuration)
+F: You can manage [Kafka configuration](https://clickhouse.com/docs/en/engines/table-engines/integrations/kafka/#configuration)
 ```yaml
 # global configuration
 clickhouse_kafka_config:
@@ -214,7 +214,7 @@ clickhouse_ldap_user_directories:
       prefix: "clickhouse_
 ```
 
-F: You can manage Merge Tree config. For the list of available parameters, see [MergeTreeSettings.h](https://github.com/yandex/ClickHouse/blob/master/dbms/src/Storages/MergeTree/MergeTreeSettings.h).
+F: You can manage Merge Tree config. For the list of available parameters, see [MergeTree tables settings](https://clickhouse.com/docs/en/operations/settings/merge-tree-settings/).
 ```yaml
 clickhouse_merge_tree_config:
   max_suspicious_broken_parts: 5
@@ -285,27 +285,93 @@ Including an example of how to use your role (for instance, with variables passe
          - { name: testu1 }
          - { name: testu2, state:present }
          - { name: testu3, state:absent }
-    clickhouse_clusters:
-      your_cluster_name:
-       shard_1:
-          - { host: "db_host_1", port: 9000 }
-          - { host: "db_host_2", port: 9000 }
-       shard_2:
-          - { host: "db_host_3", port: 9000 }
-          - { host: "db_host_4", port: 9000 }        
-    clickhouse_zookeeper_nodes:
-      - { host: "zoo_host_1", port: 2181 }
-      - { host: "zoo_host_2", port: 2181 }
-      - { host: "zoo_host_3", port: 2181 }
+      clickhouse_clusters:
+        your_cluster_name:
+          shard_1:
+              - { host: "db_host_1", port: 9000 }
+              - { host: "db_host_2", port: 9000 }
+          shard_2:
+              - { host: "db_host_3", port: 9000 }
+              - { host: "db_host_4", port: 9000 }       
+      clickhouse_zookeeper_nodes:
+        - { host: "zoo_host_1", port: 2181 }
+        - { host: "zoo_host_2", port: 2181 }
+        - { host: "zoo_host_3", port: 2181 }
     roles:
       - ansible-clickhouse
 ```
+
 To generate macros: in file host_vars\db_host_1.yml
 ```yaml
 clickhouse_macros:
   layer: 01
   shard: "your_shard_name"
   replica: "db_host_1"
+```
+
+Security harden the cluster. You can configure the cluster with extra settings
+which enables
+- HTTPS port
+- TLS Encrypted TCP port
+- HTTPS for data replication
+- Credentials for data replication
+- Secret validation for distributed queries
+- ZooKeeper ACL
+```yaml
+- hosts: clickhouse_cluster
+  become: true
+  roles:
+    - ansible-clickhouse
+  vars:
+    # HTTPS instead of normal HTTP
+    clickhouse_https_port: 8443
+    # TLS encryption for the native TCP protocol (needs `clickhouse-client --secure`)
+    clickhouse_tcp_secure_port: 9440
+    # TLS encryption between nodes in cluster
+    clickhouse_interserver_https: 9010
+    # Credentials used to authenticate nodes during data replication
+    clickhouse_interserver_http_credentials:
+      user: "internal"
+      password: "supersecretstring"
+    # Secret used to validate nodes in cluster for distributed queries
+    clickhouse_distributed_secret: "supersecretstring2"
+    # Password protect zookeeper paths used by ClickHouse
+    clickhouse_zookeeper_identity:
+      user: "zoo_user"
+      password: "secretzoostring"
+    # OpenSSL settings
+    clickhouse_ssl_server:
+      certificate_file: "/etc/clickhouse-server/server.crt"
+      private_key_file: "/etc/clickhouse-server/server.key"
+      dh_params_file: "/etc/clickhouse-server/dhparam.pem"
+      verification_mode: "none"
+      load_default_ca_file: "true"
+      cache_sessions: "true"
+      disable_protocols: "sslv2,sslv3"
+      prefer_server_ciphers: "true"
+    clickhouse_clusters:
+      your_cluster_name:
+        shard_1:
+          - host: "db_host_1"
+            port: 9440
+            secure: true
+          - host: "db_host_2"
+            port: 9440
+            secure: true
+        shard_2:
+          - host: "db_host_3"
+            port: 9440
+            secure: true
+          - host: "db_host_4"
+            port: 9440
+            secure: true
+    clickhouse_zookeeper_nodes:
+      - host: "zoo_host_1"
+        port: 2181
+      - host: "zoo_host_2"
+        port: 2181
+      - host: "zoo_host_3"
+        port: 2181
 ```
 
 F: You can call separately stages(from playbook, external role etc.):
@@ -326,7 +392,7 @@ BSD
 Author Information
 ------------------
 
-[ClickHouse](https://clickhouse.yandex/docs/en/index.html) by [Yandex LLC](https://yandex.ru/company/).
+[ClickHouse](https://clickhouse.com/docs/en/index.html) by [ClickHouse, Inc.](https://clickhouse.com/company/).
 
 Role by [AlexeySetevoi](https://github.com/AlexeySetevoi).
 
