@@ -31,6 +31,10 @@ F: you can manage ttl query_log:
 ```yaml
 clickhouse_query_log_ttl: 'event_date + INTERVAL 7 DAY DELETE'
 ```
+F: you can manage ttl query_thread_log:
+```yaml
+clickhouse_query_thread_log_ttl: 'event_date + INTERVAL 7 DAY DELETE'
+```
 
 F: Or you can specify ips directly e.g. to listen on all ipv4 and ipv6 addresses:
 ```yaml
@@ -252,6 +256,7 @@ Including an example of how to use your role (for instance, with variables passe
               dbs: [ testu1,testu2,testu3 ] ,
               comment: "classic user with multi dbs and multi-custom network allow password"}
       clickhouse_query_log_ttl: 'event_date + INTERVAL 7  DELETE'
+      clickhouse_query_thread_log_ttl: 'event_date + INTERVAL 7  DELETE'
       clickhouse_dicts:
           test1:
             name: test_dict

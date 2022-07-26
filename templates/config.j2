@@ -291,6 +291,9 @@
         <database>system</database>
         <table>query_thread_log</table>
         <partition_by>toYYYYMM(event_date)</partition_by>
+        {% if clickhouse_query_thread_log_ttl is defined %}
+        <ttl>{{ clickhouse_query_thread_log_ttl }}</ttl>
+        {% endif %}        
         <flush_interval_milliseconds>7500</flush_interval_milliseconds>
     </query_thread_log>
 
