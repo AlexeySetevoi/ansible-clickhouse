@@ -1,3 +1,4 @@
 ---
 clickhouse_supported: yes
 clickhouse_repo: "https://packages.clickhouse.com/rpm/stable/"
+clickhouse_repo_key: "https://packages.clickhouse.com/rpm/stable/repodata/repomd.xml.key"
