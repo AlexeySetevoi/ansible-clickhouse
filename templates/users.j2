@@ -52,9 +52,9 @@
         {% endfor %}
         </allow_databases>
         {% endif %}
-	{% if (user.access_management is defined) and (user.access_management|string in ["0","1"]) %}
+       {% if (user.access_management is defined) and (user.access_management|string in ["0","1"]) %}
         <access_management>{{ user.access_management }}</access_management>
-    {% endif %}
+       {% endif %}
     </{{ user.name }}>
     {% endfor %}
     <!-- Custom users. -->
