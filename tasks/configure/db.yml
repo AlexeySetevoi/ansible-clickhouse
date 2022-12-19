@@ -1,12 +1,27 @@
 ---
+- name: Find default user parameters
+  set_fact:
+    default_user: "{{ (clickhouse_users_default | selectattr('name', 'search', 'default') | first) | default({}, true) }}"
+  run_once: true
+
 - name: Set ClickHose Connection String
-  set_fact: clickhouse_connection_string="clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_secure_port | default(clickhouse_tcp_port) }}{{' --secure' if clickhouse_tcp_secure_port is defined else '' }}"
+  set_fact:
+    clickhouse_connection_string: "clickhouse-client -h 127.0.0.1 --port {{ clickhouse_tcp_secure_port | default(clickhouse_tcp_port) }}{{' --secure' if clickhouse_tcp_secure_port is defined else '' }}"
+
+- name: Extend ClickHose Connection String
+  set_fact:
+    clickhouse_connection_string: "{{ clickhouse_connection_string }} --password {{ default_user.password}}"
+  when:
+    - default_user.password is defined
+    - default_user.password | length > 0
+  no_log: True
 
 - name: Gather list of existing databases
   command: "{{ clickhouse_connection_string }} -q 'show databases'"
   changed_when: False
   register: existing_databases
   tags: [config_db]
+  no_log: True
 
 - name: Config | Delete database config
   command: |
@@ -16,6 +31,7 @@
   with_items: "{{ clickhouse_dbs }}"
   when: item.state is defined and item.state == 'absent' and item.name in existing_databases.stdout_lines
   tags: [config_db]
+  no_log: True
 
 - name: Config | Create database config
   command: |
@@ -26,3 +42,4 @@
   with_items: "{{ clickhouse_dbs }}"
   when: (item.state is undefined or item.state == 'present') and item.name not in existing_databases.stdout_lines
   tags: [config_db]
+  no_log: True
