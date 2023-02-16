@@ -8,6 +8,9 @@ clickhouse_package:
 
 clickhouse_path_configdir: "/etc/clickhouse-server"
 clickhouse_path_logdir: "/var/log/clickhouse-server"
-clickhouse_path_data: "{{ clickhouse_path_base }}/clickhouse/"
-clickhouse_path_tmp: "{{ clickhouse_path_base }}/clickhouse/tmp/"
+clickhouse_path_data: "{{ clickhouse_path_base }}/clickhouse"
+clickhouse_path_tmp: "{{ clickhouse_path_base }}/clickhouse/tmp"
+clickhouse_path_chk: "{{ clickhouse_path_data }}/coordination"
+clickhouse_path_chk_snap: "{{ clickhouse_path_chk }}/snapshots"
+clickhouse_path_chk_log: "{{ clickhouse_path_chk }}/log"
 clickhouse_service: 'clickhouse-server.service'

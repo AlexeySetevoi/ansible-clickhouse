@@ -11,6 +11,9 @@
     - "{{ clickhouse_path_configdir }}"
     - "{{ clickhouse_path_tmp }}"
     - "{{ clickhouse_path_data }}"
+    - "{{ clickhouse_path_chk }}"
+    - "{{ clickhouse_path_chk_snap }}"
+    - "{{ clickhouse_path_chk_log }}"
   notify: restart-ch
   become: true
 
@@ -83,6 +86,17 @@
   notify: restart-ch
   become: true
   when: clickhouse_zookeeper_nodes is defined
+
+- name: Config | Generate Clickhouse Keeper servers config
+  template:
+    src: clickhousekeeper-servers.j2
+    dest: "{{ clickhouse_path_configdir }}/config.d/clickhousekeeper-servers.xml"
+    owner: "{{ clickhouse_user | default('clickhouse') }}"
+    group: "{{ clickhouse_group | default('clickhouse') }}"
+    mode: "u=rw,og=r"
+  notify: restart-ch
+  become: true
+  when: clickhousekeeper_nodes is defined
 
 - name: Config | Fix interserver_http_port and intersever_https_port collision
   lineinfile:

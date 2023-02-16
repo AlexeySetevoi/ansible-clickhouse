@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+{{ ansible_managed | comment('xml') }} 
+<clickhouse>
+  <keeper_server>
+    <tcp_port>{{ clickhouse_keeper_port }}</tcp_port>
+    <server_id>{{ clickhouse_keeper_id }}</server_id>
+    <log_storage_path>{{ clickhouse_path_chk_log }}</log_storage_path>
+    <snapshot_storage_path>{{ clickhouse_path_chk_snap }}</snapshot_storage_path>
+
+    <raft_configuration>
+{% for server in clickhousekeeper_nodes %}
+      <server>
+{% for key, value in server.items() %}
+        <{{ key }}>{{ value }}</{{ key }}>
+{% endfor %}
+      </server>
+{% endfor %}
+    </raft_configuration>
+  </keeper_server>
+  <zookeeper>
+{% for server in clickhousekeeper_nodes %}
+    <node index="{{ server.id }}">
+      <host>{{ server.hostname }}</host>
+      <port>{{ clickhouse_keeper_port }}</port>
+    </node>
+{% endfor %}
+  </zookeeper>
+</clickhouse>
