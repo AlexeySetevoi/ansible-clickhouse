@@ -96,7 +96,7 @@
     mode: "u=rw,og=r"
   notify: restart-ch
   become: true
-  when: clickhousekeeper_nodes is defined
+  when: (clickhousekeeper_nodes is defined) and (clickhousekeeper_nodes | selectattr('id', '==', clickhouse_keeper_id))
 
 - name: Config | Fix interserver_http_port and intersever_https_port collision
   lineinfile:
