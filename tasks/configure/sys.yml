@@ -87,6 +87,17 @@
   become: true
   when: clickhouse_zookeeper_nodes is defined
 
+- name: Config | Generate zookeeper config for all nodes
+  template:
+    src: zookeeper-config.j2
+    dest: "{{ clickhouse_path_configdir }}/config.d/zookeeper-config.xml"
+    owner: "{{ clickhouse_user | default('clickhouse') }}"
+    group: "{{ clickhouse_group | default('clickhouse') }}"
+    mode: "u=rw,og=r"
+  notify: restart-ch
+  become: true
+  when: clickhousekeeper_nodes is defined
+
 - name: Config | Generate Clickhouse Keeper servers config
   template:
     src: clickhousekeeper-servers.j2
