@@ -20,6 +20,7 @@ F: You can manage listen ports
 clickhouse_http_port: 8123
 clickhouse_tcp_port: 9000
 clickhouse_interserver_http: 9009
+clickhouse_keeper_port: 9181
 ```
 F: You can add listen ips on top of defaults:
 ```yaml
@@ -225,6 +226,26 @@ clickhouse_merge_tree_config:
   parts_to_throw_insert: 600
 ```
 
+F: You can configure ClickHouse Keeper, as an alternative to Zookeeper. For a list of available parameters, see [Configuring ClickHouse Keeper](https://clickhouse.com/docs/en/guides/sre/keeper/clickhouse-keeper). The items in the following variable will end up in the `raft_configuration`. Mutually exclusive with `clickhouse_zookeeper_nodes`.
+```yaml
+clickhouse_keeper_id: 1 # This machine's ID
+clickhousekeeper_nodes:
+  - id: 1
+    hostname: "host1"
+    port: 9234 # use Raft Port here
+  - id: 2
+    hostname: "host2"
+    port: 9234
+```
+
+The following vars for ClickHouse Keeper have sane defaults, but are adjustable:
+```yaml
+clickhouse_keeper_port: 9181
+clickhouse_path_chk: /var/lib/clickhouse/coordination
+clickhouse_path_chk_log: /var/lib/clickhouse/coordination/log
+clickhouse_path_chk_snap: /var/lib/clickhouse/coordination/snapshots
+```
+
 Example Playbook
 ----------------
 
@@ -314,6 +335,31 @@ clickhouse_macros:
   replica: "db_host_1"
 ```
 
+To automate detection of `shard` macro value based on `clickhouse_clusters` dict
+(given that `ansible_hostname` resolves to `db-host-?`):
+```yaml
+- hosts: clickhouse_cluster
+  remote_user: root
+  vars:
+    clickhouse_clusters:
+      your_cluster_name:
+        shard_1:
+            - { host: "db-host-1", port: 9000 }
+            - { host: "db-host-2", port: 9000 }
+        shard_2:
+            - { host: "db-host-3", port: 9000 }
+            - { host: "db-host-4", port: 9000 }       
+    clickhouse_macros:
+      shard: "{{ this_shard }}"
+      replica: "{{ ansible_hostname }}"
+  tasks:
+    - name: get shard of host
+      set_fact:
+        this_shard: "{{ item.0.key }}"
+      loop: "{{ clickhouse_clusters.your_cluster_name | dict2items | subelements('value') }}"
+      when: item.1.host == ansible_hostname
+```
+
 Security harden the cluster. You can configure the cluster with extra settings
 which enables
 - HTTPS port
@@ -386,7 +432,7 @@ Tag | Action
 install | Only installation of packages
 config_sys | Only configuration system configs(users.xml and config.xml)
 config_db | Only add&remove databases
-config_sys / Only regenerate dicts
+config_sys | Only regenerate dicts
 config | config_sys+config_db
 
 License

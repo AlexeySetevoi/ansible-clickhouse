@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+{{ ansible_managed | comment('xml') }}
+<clickhouse>
+  <zookeeper>
+{% for server in clickhousekeeper_nodes %}
+    <node index="{{ server.id }}">
+      <host>{{ server.hostname }}</host>
+      <port>{{ clickhouse_keeper_port }}</port>
+    </node>
+{% endfor %}
+  </zookeeper>
+</clickhouse>
