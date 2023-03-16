@@ -335,6 +335,31 @@ clickhouse_macros:
   replica: "db_host_1"
 ```
 
+To automate detection of `shard` macro value based on `clickhouse_clusters` dict
+(given that `ansible_hostname` resolves to `db-host-?`):
+```yaml
+- hosts: clickhouse_cluster
+  remote_user: root
+  vars:
+    clickhouse_clusters:
+      your_cluster_name:
+        shard_1:
+            - { host: "db-host-1", port: 9000 }
+            - { host: "db-host-2", port: 9000 }
+        shard_2:
+            - { host: "db-host-3", port: 9000 }
+            - { host: "db-host-4", port: 9000 }       
+    clickhouse_macros:
+      shard: "{{ this_shard }}"
+      replica: "{{ ansible_hostname }}"
+  tasks:
+    - name: get shard of host
+      set_fact:
+        this_shard: "{{ item.0.key }}"
+      loop: "{{ clickhouse_clusters.your_cluster_name | dict2items | subelements('value') }}"
+      when: item.1.host == ansible_hostname
+```
+
 Security harden the cluster. You can configure the cluster with extra settings
 which enables
 - HTTPS port
