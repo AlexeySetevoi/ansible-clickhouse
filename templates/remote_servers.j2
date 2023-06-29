@@ -14,6 +14,12 @@
           <replica>
             <host>{{ replica['host'] }}</host>
             <port>{{ replica['port'] | default(9000) }}</port>
+{% if replica['user'] is defined %}
+            <user>{{ replica['user'] }}</user>
+{% endif %}
+{% if replica['password'] is defined %}
+            <password>{{ replica['password'] }}</password>
+{% endif %}
 {% if 'secure' in replica %}
             <secure>1</secure>
 {% endif %}
